@@ -19,6 +19,49 @@ namespace Project5
 {
     public class Monster : Participant
     {
+        private string name;
+        private int hp;
+        private double atkChance;
+        private int damage;
 
+        public Monster(string name)
+        {
+            this.name = name;
+            hp = 20;
+            atkChance = 0.8;   //need to calculate this into the combat
+            damage = 4;
+        }
+
+        public override int Attack()
+        {
+            Random random = new Random();
+            if (random.NextDouble() < atkChance)
+            {
+                return GetDamage();
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public override string GetName()
+        {
+            return this.name;
+        }
+
+        public override int GetHealth()
+        {
+            return this.hp;
+        }
+        public override int GetDamage()
+        {
+            return this.damage;
+        }
+
+        public void SetHealth(int damageTaken)
+        {
+            this.hp -= damageTaken;
+        }
     }
 }

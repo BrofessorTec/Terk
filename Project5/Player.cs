@@ -50,21 +50,23 @@ namespace Project5
             return this.name;
         }
 
+        public override int GetHealth()
+        {
+            return this.hp;
+        }
         public override int GetDamage()
         {
             return this.damage;
         }
 
-        public override void SetDamage()
+        public void SetDamage(int damageIncrease)
         { 
-            this.damage = 10;
+            this.damage += damageIncrease;
         }
 
         public void SetHealth(int damageTaken)
         {
             this.hp -= damageTaken;
         }
-
-
     }
 }

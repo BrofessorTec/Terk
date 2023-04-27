@@ -20,15 +20,9 @@ namespace Project5
     public abstract class Participant
     {
         public abstract int Attack();
-
         public abstract string GetName();
-
+        public abstract int GetHealth();
         public abstract int GetDamage();
-
-
-        public abstract void SetDamage();
-
-        public 
 
     }
 }

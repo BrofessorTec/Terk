@@ -23,15 +23,19 @@ namespace Project5
         private bool hasMonster;
         private bool leftDoor;
         private bool rightDoor;
-        private bool exitDoor;
+        private bool exitDoor = false;
         private double monsterChance = 0.5;
+        private Monster monster;
         private bool hasWeapon;
         private Weapon? roomWep = null;
+        private bool wepClaimed = false;
 
         public Cell(int cellNum, int totSize, int wepRoom, Weapon wepType) 
         {
             Random random = new Random();
-            if (random.NextDouble() < monsterChance)  //generating the monster
+            monster = new Monster("Orc");  //can randomize this later to add more monster types and hp ranges
+
+            if ((random.NextDouble() < monsterChance) && cellNum != 0)  //generating the monster
             {
                 this.hasMonster = true;
             }
@@ -88,16 +92,30 @@ namespace Project5
 
         public bool GetHasMonster()
         { 
-            return hasMonster; 
+            if ((monster.GetHealth() <= 0) && hasMonster)
+            {
+                hasMonster = false;
+            }
+            return hasMonster;
         } 
 
         public bool GetHasWeapon()
         {
-            return hasWeapon;
+            if (hasWeapon && !wepClaimed)
+            {
+                wepClaimed = true;
+                return hasWeapon;
+            }
+            return false;
         }
         public Weapon GetWeapon()
         {
             return roomWep;
+        }
+
+        public Monster GetMonster()
+        {
+                return monster;
         }
     }
 }

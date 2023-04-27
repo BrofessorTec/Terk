@@ -35,11 +35,11 @@ namespace Project5
             wepRoom = random.Next(roomCount);
             if (random.NextDouble() < wepChance)
             {
-                wepType = new Sword("Sword", 8);
+                wepType = new Sword("Sword", 3);
             }
             else
             {
-                wepType = new Stick("Stick", 6);
+                wepType = new Stick("Stick", 1);
             }
 
             this.cells = new Cell[roomCount];
@@ -59,6 +59,7 @@ namespace Project5
         {
             if (cells[this.currRoom].GetLeftDoor())
             {
+                currRoom--;
                 return 1;
             }
             else { return 0; }
@@ -73,9 +74,30 @@ namespace Project5
             }
             else if (cells[this.currRoom].GetRightDoor())
             {
+                currRoom++;
                 return 1;
             }
             else { return 0; }
+        }
+
+        public bool RoomHasWep()
+        {
+            return cells[this.currRoom].GetHasWeapon();
+        }
+
+        public bool RoomHasMonster()
+        {
+            return cells[this.currRoom].GetHasMonster();
+        }
+
+        public Weapon GetRoomWeapon()
+        {
+            return cells[this.currRoom].GetWeapon();
+        }
+
+        public Monster GetRoomMonster()
+        {
+            return cells[this.currRoom].GetMonster();
         }
     }
 }
