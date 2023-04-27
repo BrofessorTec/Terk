@@ -24,12 +24,31 @@ namespace Project5
         private double atkChance;
         private int damage;
 
-        public Monster(string name)
+        public Monster()
         {
-            this.name = name;
-            hp = 20;
-            atkChance = 0.8;   //need to calculate this into the combat
-            damage = 4;
+            Random random = new Random();
+            int monsType = random.Next(300);
+            if (monsType < 100)
+            {
+                this.name = "Orc";
+                hp = 20;
+                atkChance = 0.8;
+                damage = 4;
+            }
+            else if (monsType < 200)
+            {
+                this.name = "Zombie";
+                hp = 15;
+                atkChance = 0.8;
+                damage = 3;
+            }
+            else if (monsType < 300)
+            {
+                this.name = "Vampire";
+                hp = 25;
+                atkChance = 0.8;
+                damage = 5;
+            }
         }
 
         public override int Attack()

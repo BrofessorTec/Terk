@@ -18,8 +18,6 @@ namespace Project5
     {
         public static void Main()
         {
-
-            //testing some Driver code here for dungeon generation
             Player userChar;
             Dungeon dungeon;
             Monster cellMonster;
@@ -30,16 +28,16 @@ namespace Project5
             dungeon = new Dungeon();
 
             Console.WriteLine($"You are very brave, {userChar.GetName()}.\nWelcome... to the cube.");
-            Console.Write("Enter any key to continue.");
+            Console.Write("\nEnter any key to continue.");
             Console.ReadLine();
             Console.Clear();
 
-            while (!gameOver)
+            while (!gameOver)  //run a loop of turns until the player reaches exit or reaches zero hp
             {
                 try
                 {
                     //probably add the map to the top of the screen?
-                    Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom()}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                    Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom()+1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
 
                     if (dungeon.RoomHasWep())
                     {
@@ -47,7 +45,6 @@ namespace Project5
                         userChar.SetDamage(dungeon.GetRoomWeapon().GetDamage());
                     }
 
-                    //add monster chance here
                     if (dungeon.RoomHasMonster())
                     {
                         cellMonster = dungeon.GetRoomMonster();
@@ -56,7 +53,7 @@ namespace Project5
                         {
                             if (userChar.Attack() != 0)
                             {
-                                Console.WriteLine($"{userChar.GetName()} hits with an attack for {userChar.GetDamage()} damage!");
+                                Console.WriteLine($"{userChar.GetName()} hits the {cellMonster.GetName()} with an attack for {userChar.GetDamage()} damage!");
                                 cellMonster.SetHealth(userChar.GetDamage());
                             }
                             else
@@ -79,17 +76,16 @@ namespace Project5
                                 Console.WriteLine("\nEnter any key to continue.");
                                 Console.ReadLine();
                                 Console.Clear();
-                                Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom()}, and you have 0 HP left.\n");  //this will just be for debugging, need to add map later
+                                Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have 0 HP left.\n");  //this will just be for debugging, need to add map later
                                 Console.WriteLine($"{userChar.GetName()} is dead. The game is over!");
                                 gameOver = true;
-                                //Console.ReadLine();
                             }
                             if (cellMonster.GetHealth() > 0)
                             {
                                 Console.WriteLine("\nEnter any key to continue.");
                                 Console.ReadLine();
                                 Console.Clear();
-                                Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom()}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                                Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
                             }
                         }
                         if (userChar.GetHealth() > 0)
@@ -98,20 +94,11 @@ namespace Project5
                             Console.WriteLine("\nEnter any key to continue.");
                             Console.ReadLine();
                             Console.Clear();
-                            Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom()}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                            Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
                         }
                     }
 
-                    if (userChar.GetHealth() <= 0)
-                    {
-                        /* //moving this code to be right after the attack now
-                        Console.Clear();
-                        Console.WriteLine($"{userChar.GetName()} is dead. The game is over!");
-                        gameOver = true;
-                        Console.ReadLine();
-                        */
-                    }
-                    else
+                    if (userChar.GetHealth() > 0)
                     {
                         Console.WriteLine("What would you like to do?" +
                             "\nPlease enter \"Go East\" or \"Go West\"");
