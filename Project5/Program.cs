@@ -61,14 +61,17 @@ namespace Project5
                                 Console.WriteLine($"{userChar.GetName()} misses with an attack!");
                             }
 
-                            if (cellMonster.Attack() != 0)
+                            if (cellMonster.GetHealth() > 0)
                             {
-                                Console.WriteLine($"{cellMonster.GetName()} hits {userChar.GetName()} with an attack for {cellMonster.GetDamage()} damage!");
-                                userChar.SetHealth(cellMonster.GetDamage());
-                            }
-                            else
-                            {
-                                Console.WriteLine($"{cellMonster.GetName()} misses {userChar.GetName()} with an attack!");
+                                if (cellMonster.Attack() != 0)
+                                {
+                                    Console.WriteLine($"{cellMonster.GetName()} hits {userChar.GetName()} with an attack for {cellMonster.GetDamage()} damage!");
+                                    userChar.SetHealth(cellMonster.GetDamage());
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"{cellMonster.GetName()} misses {userChar.GetName()} with an attack!");
+                                }
                             }
 
                             if (userChar.GetHealth() <= 0)
@@ -153,12 +156,16 @@ namespace Project5
                 {
                     Console.Write("Hello and welcome to Zork! \nWhat is your name, adventurer?\nName: ");
                     userName = Console.ReadLine();
+                    if (userName == "")
+                    {
+                        throw new Exception();
+                    }
                     userNameValid = true;
                     Console.Clear();
                 }
                 catch
                 {
-                    Console.Write("That is not a valid entry.\nEnter any key to continue.");
+                    Console.Write("\nThat is not a valid entry.\nEnter any key to continue.");
                     Console.ReadLine();
                     Console.Clear();
                 }
