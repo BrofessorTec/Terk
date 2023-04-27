@@ -55,5 +55,27 @@ namespace Project5
             return this.currRoom;
         }
 
+        public int GoLeft()
+        {
+            if (cells[this.currRoom].GetLeftDoor())
+            {
+                return 1;
+            }
+            else { return 0; }
+        }
+
+        public int GoRight()
+        {
+            if (cells[this.currRoom].GetExitDoor())
+            {
+                //Console.WriteLine("Congrats! You win!"); //can move this win code to the driver probably for it to handle
+                return -1;
+            }
+            else if (cells[this.currRoom].GetRightDoor())
+            {
+                return 1;
+            }
+            else { return 0; }
+        }
     }
 }
