@@ -22,7 +22,7 @@ namespace Project5
         private int roomCount;
         private int currRoom;
         private Cell[] cells;
-        private double wepChance = 0.5;
+        private double wepChance = 0.2;
         private Weapon wepType;
         private int wepRoom;
 
@@ -37,9 +37,21 @@ namespace Project5
             {
                 wepType = new Sword("Sword", 3);
             }
-            else
+            else if (random.NextDouble() < (wepChance*2))
             {
                 wepType = new Stick("Stick", 1);
+            }
+            else if (random.NextDouble() < (wepChance * 3))
+            {
+                wepType = new Knife("Knife", 2);
+            }
+            else if (random.NextDouble() < (wepChance * 4))
+            {
+                wepType = new Laser("Laser", 4);
+            }
+            else if (random.NextDouble() < (wepChance * 5))
+            {
+                wepType = new Gun("Gun", 5);
             }
 
             this.cells = new Cell[roomCount];

@@ -33,7 +33,7 @@ namespace Project5
         public Cell(int cellNum, int totSize, int wepRoom, Weapon wepType) 
         {
             Random random = new Random();
-            monster = new Monster("Orc");  //can randomize this later to add more monster types and hp ranges
+            monster = new Monster(); 
 
             if ((random.NextDouble() < monsterChance) && cellNum != 0)  //generating the monster
             {
