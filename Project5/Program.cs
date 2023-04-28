@@ -184,57 +184,90 @@ namespace Project5
             int cellSize = dungeon.GetRoomCount();
             //for (int i = 0; i < cellSize; i++)
             //{
-                char enemyType;
-                char wepType;
-                char playerPos;
+            string enemyType;
+            string wepType;
+            string playerPos;
 
-                //if (i == dungeon.GetCurrRoom())  //adjust the map to just display the current room for now.. can't get multiple rooms to display correctly
-                //{
-                    playerPos = 'P';
-                //}
-                //else
-                //{
-                //    playerPos = ' ';
-                //}
+            if (player.GetHealth() > 0)  //adjust the map to just display the current room for now.. can't get multiple rooms to display correctly
+            {
+                playerPos = "P";
+            }
+            else
+            {
+                playerPos = "X";
+            }
 
-                if (dungeon.RoomHasMonster())
+            if (dungeon.RoomHasMonster())
+            {
+                enemyType = dungeon.GetRoomMonster().GetName()[0].ToString();
+            }
+            else
+            {
+                enemyType = " ";
+            }
+
+            if (dungeon.RoomHasWep(0) && !dungeon.RoomWepClaimed())
+            {
+                if (dungeon.GetRoomWeapon().GetName().CompareTo("Stick") == 0)
                 {
-                    enemyType = dungeon.GetRoomMonster().GetName()[0];
+                    wepType = "St";
+                }
+                else if (dungeon.GetRoomWeapon().GetName().CompareTo("Sword") == 0)
+                {
+                    wepType = "Sw";
                 }
                 else
                 {
-                    enemyType = ' ';
+                    wepType = dungeon.GetRoomWeapon().GetName()[0].ToString();
                 }
+            }
+            else
+            {
+                wepType = " ";
+            }
 
-                if (dungeon.RoomHasWep(0) && !dungeon.RoomWepClaimed())
+            if (dungeon.RoomHasWep(0) && !dungeon.RoomWepClaimed())
+            {
+                if (dungeon.GetRoomWeapon().GetName().CompareTo("Stick") == 0 || dungeon.GetRoomWeapon().GetName().CompareTo("Sword") == 0)
                 {
-                    wepType = dungeon.GetRoomWeapon().GetName()[0];
+                    map += "-------" +
+                         $"\n-  {enemyType}  -" +
+                         $"\n-  {playerPos}  -" +
+                         $"\n-  {wepType} -" +
+                         "\n-------\n";
                 }
                 else
                 {
-                    wepType = ' ';
+                    map += "-------" +
+                         $"\n-  {enemyType}  -" +
+                         $"\n-  {playerPos}  -" +
+                         $"\n-  {wepType}  -" +
+                         "\n-------\n";
                 }
-
+            }
+            else
+            {
                 map += "-------" +
                      $"\n-  {enemyType}  -" +
                      $"\n-  {playerPos}  -" +
                      $"\n-  {wepType}  -" +
                      "\n-------\n";
+            }
             //}
             return map;
         }
 
 
-            /*public void PlayerCombat(Player player, Monster monster, int Damage)  //this might be used for combat later? i think this would only be needed if there was multiple enemies at once and you need to select one
+        /*public void PlayerCombat(Player player, Monster monster, int Damage)  //this might be used for combat later? i think this would only be needed if there was multiple enemies at once and you need to select one
+        {
+            if (Damage > 0)
             {
-                if (Damage > 0)
-                {
-                    Console.WriteLine(!"{player.GetName()} hit {monster.GetName()} for {Damage} damage!");
-                }
-                else
-                {
-                    Console.WriteLine(!"{player.GetName()} missed {monster.GetName()}!");
-                }
-            }*/
-        }
+                Console.WriteLine(!"{player.GetName()} hit {monster.GetName()} for {Damage} damage!");
+            }
+            else
+            {
+                Console.WriteLine(!"{player.GetName()} missed {monster.GetName()}!");
+            }
+        }*/
     }
+}
