@@ -99,14 +99,26 @@ namespace Project5
             return hasMonster;
         } 
 
-        public bool GetHasWeapon()
+        public bool GetHasWeapon(int checkType)
         {
-            if (hasWeapon && !wepClaimed)
+            if (checkType == 1)
             {
-                wepClaimed = true;
+                if (hasWeapon && !wepClaimed)
+                {
+                    wepClaimed = true;
+                    return hasWeapon;
+                }
+                return false;
+            }
+            else
+            {
                 return hasWeapon;
             }
-            return false;
+        }
+
+        public bool GetWepClaimed()
+        {
+            return wepClaimed;
         }
         public Weapon GetWeapon()
         {

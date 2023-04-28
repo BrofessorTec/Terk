@@ -92,9 +92,13 @@ namespace Project5
             else { return 0; }
         }
 
-        public bool RoomHasWep()
+        public int GetRoomCount()
         {
-            return cells[this.currRoom].GetHasWeapon();
+            return this.roomCount;
+        }
+        public bool RoomHasWep(int checkType)
+        {
+            return cells[this.currRoom].GetHasWeapon(checkType);
         }
 
         public bool RoomHasMonster()
@@ -102,6 +106,10 @@ namespace Project5
             return cells[this.currRoom].GetHasMonster();
         }
 
+        public bool RoomWepClaimed()
+        {
+            return cells[this.currRoom].GetWepClaimed();
+        }
         public Weapon GetRoomWeapon()
         {
             return cells[this.currRoom].GetWeapon();

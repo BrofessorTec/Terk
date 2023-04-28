@@ -1,5 +1,6 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 /**
 * ------------------------------------------------------------------------
@@ -37,9 +38,10 @@ namespace Project5
                 try
                 {
                     //probably add the map to the top of the screen?
-                    Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom()+1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                    Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                    Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
 
-                    if (dungeon.RoomHasWep())
+                    if (dungeon.RoomHasWep(1))
                     {
                         Console.WriteLine($"You found a {dungeon.GetRoomWeapon().GetName()}! Your attack power has increased by {dungeon.GetRoomWeapon().GetDamage()}.\n");
                         userChar.SetDamage(dungeon.GetRoomWeapon().GetDamage());
@@ -80,6 +82,7 @@ namespace Project5
                                 Console.ReadLine();
                                 Console.Clear();
                                 Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have 0 HP left.\n");  //this will just be for debugging, need to add map later
+                                Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
                                 Console.WriteLine($"{userChar.GetName()} is dead. The game is over!");
                                 gameOver = true;
                             }
@@ -89,6 +92,7 @@ namespace Project5
                                 Console.ReadLine();
                                 Console.Clear();
                                 Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                                Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
                             }
                         }
                         if (userChar.GetHealth() > 0)
@@ -98,6 +102,7 @@ namespace Project5
                             Console.ReadLine();
                             Console.Clear();
                             Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                            Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
                         }
                     }
 
@@ -173,16 +178,63 @@ namespace Project5
             return userName;
         }
 
-        /*public void PlayerCombat(Player player, Monster monster, int Damage)  //this might be used for combat later? i think this would only be needed if there was multiple enemies at once and you need to select one
+        public static string DisplayMap(Player player, Dungeon dungeon)
         {
-            if (Damage > 0)
+            string map = "";
+            int cellSize = dungeon.GetRoomCount();
+            //for (int i = 0; i < cellSize; i++)
+            //{
+                char enemyType;
+                char wepType;
+                char playerPos;
+
+                //if (i == dungeon.GetCurrRoom())  //adjust the map to just display the current room for now.. can't get multiple rooms to display correctly
+                //{
+                    playerPos = 'P';
+                //}
+                //else
+                //{
+                //    playerPos = ' ';
+                //}
+
+                if (dungeon.RoomHasMonster())
+                {
+                    enemyType = dungeon.GetRoomMonster().GetName()[0];
+                }
+                else
+                {
+                    enemyType = ' ';
+                }
+
+                if (dungeon.RoomHasWep(0) && !dungeon.RoomWepClaimed())
+                {
+                    wepType = dungeon.GetRoomWeapon().GetName()[0];
+                }
+                else
+                {
+                    wepType = ' ';
+                }
+
+                map += "-------" +
+                     $"\n-  {enemyType}  -" +
+                     $"\n-  {playerPos}  -" +
+                     $"\n-  {wepType}  -" +
+                     "\n-------\n";
+            //}
+            return map;
+        }
+
+
+            /*public void PlayerCombat(Player player, Monster monster, int Damage)  //this might be used for combat later? i think this would only be needed if there was multiple enemies at once and you need to select one
             {
-                Console.WriteLine(!"{player.GetName()} hit {monster.GetName()} for {Damage} damage!");
-            }
-            else
-            {
-                Console.WriteLine(!"{player.GetName()} missed {monster.GetName()}!");
-            }
-        }*/
+                if (Damage > 0)
+                {
+                    Console.WriteLine(!"{player.GetName()} hit {monster.GetName()} for {Damage} damage!");
+                }
+                else
+                {
+                    Console.WriteLine(!"{player.GetName()} missed {monster.GetName()}!");
+                }
+            }*/
+        }
     }
-}
