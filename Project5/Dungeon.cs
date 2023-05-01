@@ -96,6 +96,22 @@ namespace Project5
         {
             return this.roomCount;
         }
+
+        public bool GetRightDoor()
+        {
+            return cells[this.currRoom].GetRightDoor();
+        }
+
+        public bool GetLeftDoor()
+        {
+            return cells[this.currRoom].GetLeftDoor();
+        }
+
+        public bool GetExitDoor()
+        {
+            return cells[this.currRoom].GetExitDoor();
+        }
+
         public bool RoomHasWep(int checkType)
         {
             return cells[this.currRoom].GetHasWeapon(checkType);
