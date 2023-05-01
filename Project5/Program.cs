@@ -187,6 +187,14 @@ namespace Project5
             string enemyType;
             string wepType;
             string playerPos;
+            bool doorLeft;
+            string doorLeftIcon = "-";
+            string doorRightIcon = "-";
+            string doorExitIcon = "-";
+            string wallTopExitIcon = "-";
+            string wallBotExitIcon = "-";
+            bool doorRight;
+            bool doorExit;
 
             if (player.GetHealth() > 0)  //adjust the map to just display the current room for now.. can't get multiple rooms to display correctly
             {
@@ -226,31 +234,54 @@ namespace Project5
                 wepType = " ";
             }
 
+
+            if (dungeon.GetRightDoor()) 
+            {
+                doorRight = true;
+                doorRightIcon = "|";
+            }
+
+            if (dungeon.GetLeftDoor())
+            {
+                doorLeft = true;
+                doorLeftIcon = "|";
+            }
+
+            if (dungeon.GetExitDoor())
+            {
+                /*doorExit = true;
+                doorExitIcon = "[]";*/   // for now since just displaying one cell, i can just override the right door icon for the exit
+                doorRight = true;
+                doorRightIcon = " ";
+                wallTopExitIcon = "\\";
+                wallBotExitIcon = "/ ";
+            }
+
             if (dungeon.RoomHasWep(0) && !dungeon.RoomWepClaimed())
             {
                 if (dungeon.GetRoomWeapon().GetName().CompareTo("Stick") == 0 || dungeon.GetRoomWeapon().GetName().CompareTo("Sword") == 0)
                 {
                     map += "-------" +
-                         $"\n-  {enemyType}  -" +
-                         $"\n-  {playerPos}  -" +
-                         $"\n-  {wepType} -" +
+                         $"\n-  {enemyType}  {wallTopExitIcon}" +
+                         $"\n{doorLeftIcon}  {playerPos}  {doorRightIcon}" +
+                         $"\n-  {wepType} {wallBotExitIcon}" +
                          "\n-------\n";
                 }
                 else
                 {
                     map += "-------" +
-                         $"\n-  {enemyType}  -" +
-                         $"\n-  {playerPos}  -" +
-                         $"\n-  {wepType}  -" +
+                         $"\n-  {enemyType}  {wallTopExitIcon}" +
+                         $"\n{doorLeftIcon}  {playerPos}  {doorRightIcon}" +
+                         $"\n-  {wepType}  {wallBotExitIcon}" +
                          "\n-------\n";
                 }
             }
             else
             {
                 map += "-------" +
-                     $"\n-  {enemyType}  -" +
-                     $"\n-  {playerPos}  -" +
-                     $"\n-  {wepType}  -" +
+                     $"\n-  {enemyType}  {wallTopExitIcon}" +
+                     $"\n{doorLeftIcon}  {playerPos}  {doorRightIcon}" +
+                     $"\n-  {wepType}  {wallBotExitIcon}" +
                      "\n-------\n";
             }
             //}
