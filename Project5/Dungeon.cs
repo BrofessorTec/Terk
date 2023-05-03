@@ -25,11 +25,13 @@ namespace Project5
         private double wepChance = 0.2;
         private Weapon wepType;
         private int wepRoom;
+        private Player player;
 
 
-        public Dungeon() 
+        public Dungeon(Player player) 
         {
             Random random = new Random();
+            this.player = player;
             this.roomCount = random.Next(5,11);
             this.currRoom = 0;
             wepRoom = random.Next(roomCount);
@@ -57,7 +59,7 @@ namespace Project5
             this.cells = new Cell[roomCount];
             for (int i = 0; i < roomCount; i++)
             {
-                cells[i] = new Cell(i, roomCount, wepRoom, wepType);
+                cells[i] = new Cell(i, roomCount, wepRoom, wepType, player);
             }
 
         }
@@ -71,7 +73,9 @@ namespace Project5
         {
             if (cells[this.currRoom].GetLeftDoor())
             {
+                cells[this.currRoom].SetActiveRoom(false);
                 currRoom--;
+                cells[this.currRoom].SetActiveRoom(true);
                 return 1;
             }
             else { return 0; }
@@ -86,7 +90,10 @@ namespace Project5
             }
             else if (cells[this.currRoom].GetRightDoor())
             {
+                cells[this.currRoom].SetActiveRoom(false);
                 currRoom++;
+                cells[this.currRoom].SetActiveRoom(true);
+                cells[this.currRoom].SetRoomEntered();
                 return 1;
             }
             else { return 0; }
@@ -134,6 +141,17 @@ namespace Project5
         public Monster GetRoomMonster()
         {
             return cells[this.currRoom].GetMonster();
+        }
+
+        public override string ToString()
+        {
+            string map = "";
+            for (int i = 0;i < roomCount; i++)
+            {
+                map += cells[i].ToString(); //this doesn't look done yet?
+            }
+
+            return map;
         }
     }
 }

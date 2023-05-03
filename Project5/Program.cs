@@ -26,7 +26,7 @@ namespace Project5
             string? userDir = "go east";
 
             userChar = new Player(GetPlayerName());
-            dungeon = new Dungeon();
+            dungeon = new Dungeon(userChar);
 
             Console.WriteLine($"You are very brave, {userChar.GetName()}.\nWelcome... to the cube.");
             Console.Write("\nEnter any key to continue.");
@@ -39,7 +39,8 @@ namespace Project5
                 {
                     //probably add the map to the top of the screen?
                     Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
-                    Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                    //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                    Console.WriteLine(dungeon.ToString()); //testing new map here
 
                     if (dungeon.RoomHasWep(1))
                     {
@@ -82,7 +83,8 @@ namespace Project5
                                 Console.ReadLine();
                                 Console.Clear();
                                 Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have 0 HP left.\n");  //this will just be for debugging, need to add map later
-                                Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                                //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                                Console.WriteLine(dungeon.ToString()); //testing new map here
                                 Console.WriteLine($"{userChar.GetName()} is dead. The game is over!");
                                 gameOver = true;
                             }
@@ -92,7 +94,8 @@ namespace Project5
                                 Console.ReadLine();
                                 Console.Clear();
                                 Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
-                                Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                                //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                                Console.WriteLine(dungeon.ToString()); //testing new map here
                             }
                         }
                         if (userChar.GetHealth() > 0)
@@ -102,7 +105,8 @@ namespace Project5
                             Console.ReadLine();
                             Console.Clear();
                             Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
-                            Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                            //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                            Console.WriteLine(dungeon.ToString()); //testing new map here
                         }
                     }
 
