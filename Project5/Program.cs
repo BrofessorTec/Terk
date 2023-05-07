@@ -30,7 +30,7 @@ namespace Project5
                     Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
                     //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
                     //Console.WriteLine(dungeon.GetCellMap(dungeon.GetCurrRoom())); //this also looks like it works for the single cell map
-                    Console.WriteLine(dungeon.ToString()); //testing new map here
+                    Console.WriteLine(dungeon.ToString(0)); //testing new map here
 
                     //will probably tweak it so that the default map shows your current row, and the View Map display alls rows and columns
 
@@ -77,7 +77,7 @@ namespace Project5
                                 Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have 0 HP left.\n");  //this will just be for debugging, need to add map later
                                 //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
                                 //Console.WriteLine(dungeon.GetCellMap(dungeon.GetCurrRoom())); //this also looks like it works for the single cell map
-                                Console.WriteLine(dungeon.ToString()); //testing new map here
+                                Console.WriteLine(dungeon.ToString(0)); //testing new map here
                                 Console.WriteLine($"{userChar.GetName()} is dead. The game is over!");
                                 gameOver = true;
                             }
@@ -89,7 +89,7 @@ namespace Project5
                                 Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
                                 //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
                                 //Console.WriteLine(dungeon.GetCellMap(dungeon.GetCurrRoom())); //this also looks like it works for the single cell map
-                                Console.WriteLine(dungeon.ToString()); //testing new map here
+                                Console.WriteLine(dungeon.ToString(0)); //testing new map here
 
                             }
                         }
@@ -137,7 +137,7 @@ namespace Project5
                         else if (userDir.ToLower() == "view map")
                         {
                             Console.Clear();
-                            Console.WriteLine(dungeon.ToString()); //testing new map here
+                            Console.WriteLine(dungeon.ToString(1)); //testing new map here
                             //Console.WriteLine(dungeon.ToString(1)); //testing new map here
                             Console.WriteLine("\nEnter any key to continue.");
                             Console.ReadLine();

@@ -185,15 +185,46 @@ namespace Project5
                         }
                     }
                     loop++;
-                    cellLayerLoop++;
                     sev += 7;
                     map += "\n";
+                }
+                cellLayerLoop++;
+            }
+            return map;
+        }
+
+        public string ToString(int mapType)  //testing to have a tostring for map row and whole map
+        {
+            string map = "";
+            int loop = 0;
+            int sev = 0;
+            int cellLayers = 1;  //this will need to be updated to count how many Rows exist in 2d map
+            int cellLayerLoop = 0;
+            while (cellLayerLoop < cellLayers)
+            {
+                while (loop < 5)
+                {
+                    for (int i = 1; i <= roomCount; i++)
+                    {
+                        for (int j = 1; j <= 7; j++)
+                        {
+                            map += cells[i - 1].ToString()[(j + sev) - 1];
+                        }
+                    }
+                    loop++;
+                    sev += 7;
+                    map += "\n";
+                }
+                cellLayerLoop++;
+                if (mapType == 0)
+                {
+                    break;
                 }
             }
             return map;
         }
 
-        public string ToString(int type)  //this was a test but wasn't working well
+        /*public string ToString(int type)  //this was a test but wasn't working well
         {
             string map = "";
             int listSize = cells.Count();
@@ -221,6 +252,6 @@ namespace Project5
             }
 
             return map;
-        }
+        }*/
     }
 }
