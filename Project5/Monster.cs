@@ -1,15 +1,4 @@
-﻿/**
-* ------------------------------------------------------------------------
-* File Name: Project5
-* Project Name: Zork Game
-* ------------------------------------------------------------------------
-* Author's Name and Email: Tyler Campbell, tcampbell5@etsu.edu
-* Course-Section: CSCI-1260-002
-* Creation Date: 4/12/23
-* ------------------------------------------------------------------------
-* */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,10 +8,10 @@ namespace Project5
 {
     public class Monster : Participant
     {
-        private string name;
+        /*private string name;
         private int hp;
         private double atkChance;
-        private int damage;
+        private int damage;*/
 
         public Monster()
         {
@@ -38,7 +27,7 @@ namespace Project5
             else if (monsType < 200)
             {
                 this.name = "Zombie";
-                hp = 15;
+                hp = 17;
                 atkChance = 0.8;
                 damage = 3;
             }
