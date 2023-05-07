@@ -1,15 +1,4 @@
-﻿/**
-* ------------------------------------------------------------------------
-* File Name: Project5
-* Project Name: Zork Game
-* ------------------------------------------------------------------------
-* Author's Name and Email: Tyler Campbell, tcampbell5@etsu.edu
-* Course-Section: CSCI-1260-002
-* Creation Date: 4/12/23
-* ------------------------------------------------------------------------
-* */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -142,6 +131,11 @@ namespace Project5
             roomEntered = true;
         }
 
+        public bool GetRoomEntered()
+        {
+            return this.roomEntered;
+        }
+
         public void SetActiveRoom(bool active)
         {
             if (active)
@@ -154,7 +148,7 @@ namespace Project5
             }
         }
 
-        public override string ToString()
+        /*public override string ToString()
         {
             string map = "";
             bool doorRight = false;
@@ -201,8 +195,6 @@ namespace Project5
 
                 if (GetExitDoor())
                 {
-                    /*doorExit = true;
-                    doorExitIcon = "[]";*/   // for now since just displaying one cell, i can just override the right door icon for the exit
                     doorRight = true;
                     doorRightIcon = " ";
                     wallTopExitIcon = "\\";
@@ -271,7 +263,128 @@ namespace Project5
             }
             else
             {
-                map = "not yet entered"; //will change this later, this is for testing
+                //map = "not yet entered"; //will change this later, this is for testing
+                map = "";
+            }
+
+            return map;
+        } */
+
+        public override string ToString()
+        {
+            string map = "";
+            bool doorRight = false;
+            bool doorLeft = false;
+            bool doorExit = false;
+            string doorLeftIcon = "-";
+            string doorRightIcon = "-";
+            string doorExitIcon = "-";
+            string wallTopExitIcon = "-";
+            string wallBotExitIcon = "-";
+            string wepType = " ";
+            string enemyType = " ";
+            string playerPos = " ";
+
+            if (roomEntered)
+            {
+                if (activeRoom)
+                {
+                    if (player.GetHealth() > 0)  //adjust the map to just display the current room for now.. can't get multiple rooms to display correctly
+                    {
+                        playerPos = "P";
+                    }
+                    else
+                    {
+                        playerPos = "X";
+                    }
+                }
+                else
+                {
+                    playerPos = " ";
+                }
+
+                if (GetRightDoor())
+                {
+                    doorRight = true;
+                    doorRightIcon = "|";
+                }
+
+                if (GetLeftDoor())
+                {
+                    doorLeft = true;
+                    doorLeftIcon = "|";
+                }
+
+                if (GetExitDoor())
+                {
+                    /*doorExit = true;
+                    doorExitIcon = "[]";*/   // for now since just displaying one cell, i can just override the right door icon for the exit
+                    doorRight = true;
+                    doorRightIcon = " ";
+                    wallTopExitIcon = "\\";
+                    wallBotExitIcon = "/";
+                }
+
+                if (GetHasWeapon(0) && !GetWepClaimed())
+                {
+                    if (GetWeapon().GetName().CompareTo("Stick") == 0)
+                    {
+                        wepType = "St";
+                    }
+                    else if (GetWeapon().GetName().CompareTo("Sword") == 0)
+                    {
+                        wepType = "Sw";
+                    }
+                    else
+                    {
+                        wepType = GetWeapon().GetName()[0].ToString();
+                    }
+                }
+                else
+                {
+                    wepType = " ";
+                }
+
+                if (GetHasMonster())
+                {
+                    enemyType = GetMonster().GetName()[0].ToString();
+                }
+                else
+                {
+                    enemyType = " ";
+                }
+
+                if (GetHasWeapon(0) && !GetWepClaimed())
+                {
+                    if (GetWeapon().GetName().CompareTo("Stick") == 0 || GetWeapon().GetName().CompareTo("Sword") == 0)
+                    {
+                        map += "-------" +
+                             $"-  {enemyType}  {wallTopExitIcon}" +
+                             $"{doorLeftIcon}  {playerPos}  {doorRightIcon}" +
+                             $"-  {wepType} {wallBotExitIcon}" +
+                             "-------";
+                    }
+                    else
+                    {
+                        map += "-------" +
+                             $"-  {enemyType}  {wallTopExitIcon}" +
+                             $"{doorLeftIcon}  {playerPos}  {doorRightIcon}" +
+                             $"-  {wepType}  {wallBotExitIcon}" +
+                             "-------";
+                    }
+                }
+                else
+                {
+                    map += "-------" +
+                         $"-  {enemyType}  {wallTopExitIcon}" +
+                         $"{doorLeftIcon}  {playerPos}  {doorRightIcon}" +
+                         $"-  {wepType}  {wallBotExitIcon}" +
+                         "-------";
+                }
+            }
+            else
+            {
+                map = "                                   ";  //a blank string long enough to count every character that would exist if the map was showing it
             }
 
             return map;
