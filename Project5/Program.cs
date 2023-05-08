@@ -82,7 +82,7 @@ namespace Project5
                                 Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have 0 HP left.\n");  //this will just be for debugging, need to add map later
                                 //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
                                 //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
-                                Console.WriteLine(dungeon.ToString()); //testing new map here
+                                Console.WriteLine(dungeon.ToString(1)); //testing new map here
                                 Console.WriteLine($"{userChar.GetName()} is dead. The game is over!");
                                 gameOver = true;
                             }
@@ -124,7 +124,7 @@ namespace Project5
                             if (dirCheck == -1)
                             {
                                 Console.Clear();
-
+                                Console.WriteLine(dungeon.ToString(1));
                                 Console.WriteLine($"You have beaten the dungeon, {userChar.GetName()}! You win!");
                                 gameOver = true;
                                 break;
