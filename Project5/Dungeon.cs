@@ -14,6 +14,7 @@ namespace Project5
         private int currLength;
         private int currHeight;
         private int cellCount;
+        private int exitHeight;
         private Cell[] cells;
         private double wepChance = 0.2;
         private Weapon wepType;
@@ -27,6 +28,7 @@ namespace Project5
             this.player = player;
             this.lengthTot = random.Next(6, 11);
             this.heightTot = random.Next(2, 6);
+            this.exitHeight = random.Next(2, (heightTot));
             this.activeRoom = 0;
             this.currLength = 0;
             this.currHeight = 0;
@@ -61,7 +63,7 @@ namespace Project5
                 {
                     for (int i = 0; i < lengthTot; i++)
                     {
-                        cells[i+cellOffset] = new Cell(i, j, heightTot, lengthTot, wepRoom, wepType, player);
+                        cells[i+cellOffset] = new Cell(i, j, heightTot, lengthTot, exitHeight, wepRoom, wepType, player);
                         cellCount++;
                     }
                     cellOffset += lengthTot;

@@ -124,6 +124,11 @@ namespace Project5
                                 gameOver = true;
                                 break;
                             }
+                            else if (dirCheck == 0)
+                            {
+                                Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
+                                Console.ReadLine();
+                            }
                         }
                         else if (userDir.ToLower() == "go west")
                         {

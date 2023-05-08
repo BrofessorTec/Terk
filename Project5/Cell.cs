@@ -25,7 +25,7 @@ namespace Project5
         private Player player;
         private bool activeRoom = false;
 
-        public Cell(int lengthNum, int heightNum, int heightTot, int totSize, int wepRoom, Weapon wepType, Player player)
+        public Cell(int lengthNum, int heightNum, int heightTot, int totSize, int exitHeight, int wepRoom, Weapon wepType, Player player)
         {
             Random random = new Random();
             monster = new Monster();
@@ -65,8 +65,12 @@ namespace Project5
                 else if (lengthNum == (totSize - 1))
                 {
                     leftDoor = true;
-                    rightDoor = true;
-                    exitDoor = true;
+                    rightDoor = false;
+                    if (exitHeight == heightNum)
+                    {
+                        rightDoor = true;
+                        exitDoor = true;
+                    }
                 }
             }
             else if (heightNum < (heightTot-1))
@@ -88,8 +92,12 @@ namespace Project5
                 else if (lengthNum == (totSize - 1))
                 {
                     leftDoor = true;
-                    rightDoor = true;
-                    exitDoor = true;
+                    rightDoor = false;
+                    if (exitHeight == heightNum)
+                    {
+                        rightDoor = true;
+                        exitDoor = true;
+                    }
                 }
             }
             else
@@ -111,8 +119,12 @@ namespace Project5
                 else if (lengthNum == (totSize - 1))
                 {
                     leftDoor = true;
-                    rightDoor = true;
-                    exitDoor = true;
+                    rightDoor = false;
+                    if (exitHeight == heightNum)
+                    {
+                        rightDoor = true;
+                        exitDoor = true;
+                    }
                 }
             }
 

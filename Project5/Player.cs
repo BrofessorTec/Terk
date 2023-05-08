@@ -56,6 +56,14 @@ namespace Project5
         public void SetHealth(int damageTaken)
         {
             this.hp -= damageTaken;
+            if (this.hp < 0)
+            {
+                this.hp = 0;
+            }
+            else if (this.hp > 100)
+            {
+                this.hp = 100;
+            }
         }
     }
 }
