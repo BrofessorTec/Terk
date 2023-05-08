@@ -39,6 +39,11 @@ namespace Project5
                         Console.WriteLine($"You found a {dungeon.GetRoomWeapon().GetName()}! Your attack power has increased by {dungeon.GetRoomWeapon().GetDamage()}.\n");
                         userChar.SetDamage(dungeon.GetRoomWeapon().GetDamage());
                     }
+                    else if (dungeon.RoomHasPot(1))
+                    {
+                        Console.WriteLine($"You found an HP potion! Your health has increased by 10.\n");
+                        userChar.SetHealth(-10);
+                    }
 
                     if (dungeon.RoomHasMonster())
                     {
@@ -124,6 +129,11 @@ namespace Project5
                                 gameOver = true;
                                 break;
                             }
+                            else if (dirCheck == 0)
+                            {
+                                Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
+                                Console.ReadLine();
+                            }
                         }
                         else if (userDir.ToLower() == "go west")
                         {
@@ -157,7 +167,7 @@ namespace Project5
                             Console.Clear();
                             Console.WriteLine(dungeon.ToString(1)); //testing new map here
                             //Console.WriteLine(dungeon.ToString(1)); //testing new map here
-                            Console.WriteLine("\nEnter any key to continue.");
+                            Console.WriteLine("Enter any key to continue.");
                             Console.ReadLine();
                             Console.Clear();
                         }
