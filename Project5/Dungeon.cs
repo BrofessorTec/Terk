@@ -28,7 +28,8 @@ namespace Project5
             this.player = player;
             this.lengthTot = random.Next(6, 11);
             this.heightTot = random.Next(2, 6);
-            this.exitHeight = random.Next(2, (heightTot));
+            this.exitHeight = random.Next(0, (heightTot));
+            Console.WriteLine($"{heightTot} height tot, {exitHeight} exit height");
             this.activeRoom = 0;
             this.currLength = 0;
             this.currHeight = 0;
@@ -196,6 +197,11 @@ namespace Project5
             return cells[this.activeRoom].GetHasWeapon(checkType);
         }
 
+        public bool RoomHasPot(int checkType)
+        {
+            return cells[this.activeRoom].GetHasPotion(checkType);
+        }
+
         public bool RoomHasMonster()
         {
             return cells[this.activeRoom].GetHasMonster();
@@ -204,6 +210,11 @@ namespace Project5
         public bool RoomWepClaimed()
         {
             return cells[this.activeRoom].GetWepClaimed();
+        }
+
+        public bool RoomPotClaimed()
+        {
+            return cells[this.activeRoom].GetPotClaimed();
         }
         public Weapon GetRoomWeapon()
         {

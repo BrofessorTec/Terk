@@ -24,12 +24,16 @@ namespace Project5
         private bool roomEntered = false;
         private Player player;
         private bool activeRoom = false;
+        private bool hasPotion;
+        private bool potClaimed;
 
-        public Cell(int lengthNum, int heightNum, int heightTot, int totSize, int exitHeight, int wepRoom, Weapon wepType, Player player)
+        public Cell(int lengthNum, int heightNum, int heightTot, int lengthTot, int exitHeight, int wepRoom, Weapon wepType, Player player)
         {
             Random random = new Random();
             monster = new Monster();
             this.player = player;
+            this.hasPotion = false;
+            this.potClaimed = false;
 
             if (lengthNum == 0 && heightNum == 0)
             {
@@ -56,13 +60,13 @@ namespace Project5
                     roomEntered = true;
                     activeRoom = true;
                 }
-                else if (lengthNum < (totSize - 1))
+                else if (lengthNum < (lengthTot - 1))
                 {
                     leftDoor = true;
                     rightDoor = true;
                     exitDoor = false;
                 }
-                else if (lengthNum == (totSize - 1))
+                else if (lengthNum == (lengthTot - 1))
                 {
                     leftDoor = true;
                     rightDoor = false;
@@ -73,7 +77,7 @@ namespace Project5
                     }
                 }
             }
-            else if (heightNum < (heightTot-1))
+            else if (heightNum < (heightTot - 1))
             {
                 topDoor = true;
                 botDoor = true;
@@ -83,13 +87,13 @@ namespace Project5
                     rightDoor = true;
                     exitDoor = false;
                 }
-                else if (lengthNum < (totSize - 1))
+                else if (lengthNum < (lengthTot - 1))
                 {
                     leftDoor = true;
                     rightDoor = true;
                     exitDoor = false;
                 }
-                else if (lengthNum == (totSize - 1))
+                else if (lengthNum == (lengthTot - 1))
                 {
                     leftDoor = true;
                     rightDoor = false;
@@ -110,13 +114,13 @@ namespace Project5
                     rightDoor = true;
                     exitDoor = false;
                 }
-                else if (lengthNum < (totSize - 1))
+                else if (lengthNum < (lengthTot - 1))
                 {
                     leftDoor = true;
                     rightDoor = true;
                     exitDoor = false;
                 }
-                else if (lengthNum == (totSize - 1))
+                else if (lengthNum == (lengthTot - 1))
                 {
                     leftDoor = true;
                     rightDoor = false;
@@ -128,15 +132,26 @@ namespace Project5
                 }
             }
 
-            if ((lengthNum*heightNum) == wepRoom) //generating the weapon info
+            if ((lengthNum * heightNum) == wepRoom) //generating the weapon info
             {
                 this.hasWeapon = true;
                 roomWep = wepType;
             }
             else
             {
-                this.hasWeapon = false;
                 roomWep = null;
+                if (lengthNum == 0 && heightNum == 0)
+                {
+                    this.hasPotion = false;
+                }
+                else if (random.NextDouble() < 0.15)
+                {
+                    this.hasPotion = true;
+                }
+                else
+                {
+                    this.hasWeapon = false;
+                }
             }
         }
 
@@ -151,10 +166,10 @@ namespace Project5
         }
 
         public bool GetTopDoor()
-        { return topDoor;}
+        { return topDoor; }
 
-        public bool GetBotDoor() 
-        { return botDoor;}
+        public bool GetBotDoor()
+        { return botDoor; }
         public bool GetExitDoor()
         {
             return exitDoor;
@@ -186,9 +201,31 @@ namespace Project5
             }
         }
 
+        public bool GetHasPotion(int checkType)
+        {
+            if (checkType == 1)
+            {
+                if (hasPotion && !potClaimed)
+                {
+                    potClaimed = true;
+                    return hasPotion;
+                }
+                return false;
+            }
+            else
+            {
+                return hasPotion;
+            }
+        }
+
         public bool GetWepClaimed()
         {
             return wepClaimed;
+        }
+
+        public bool GetPotClaimed()
+        {
+            return potClaimed;
         }
         public Weapon GetWeapon()
         {
@@ -419,6 +456,10 @@ namespace Project5
                         wepType = GetWeapon().GetName()[0].ToString();
                     }
                 }
+                else if (GetHasPotion(0) && !GetPotClaimed())
+                {
+                    wepType = "HP";
+                }
                 else
                 {
                     wepType = " ";
@@ -433,7 +474,26 @@ namespace Project5
                     enemyType = " ";
                 }
 
-                if (GetHasWeapon(0) && !GetWepClaimed())
+                if (GetHasPotion(0) && !GetPotClaimed())
+                {
+                    if (wepType.ToString().CompareTo("HP") == 0)
+                    {
+                        map += $"---{doorTopIcon}---" +
+                               $"-  {enemyType}  {wallTopExitIcon}" +
+                               $"{doorLeftIcon}  {playerPos}  {doorRightIcon}" +
+                               $"-  {wepType} {wallBotExitIcon}" +
+                               $"---{doorBotIcon}---";
+                    }
+                    else
+                    {
+                        map += $"---{doorTopIcon}---" +
+                             $"-  {enemyType}  {wallTopExitIcon}" +
+                             $"{doorLeftIcon}  {playerPos}  {doorRightIcon}" +
+                             $"-  {wepType}  {wallBotExitIcon}" +
+                             $"---{doorBotIcon}---";
+                    }
+                }
+                else if (GetHasWeapon(0) && !GetWepClaimed())
                 {
                     if (GetWeapon().GetName().CompareTo("Stick") == 0 || GetWeapon().GetName().CompareTo("Sword") == 0)
                     {

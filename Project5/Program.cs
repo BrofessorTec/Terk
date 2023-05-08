@@ -39,6 +39,11 @@ namespace Project5
                         Console.WriteLine($"You found a {dungeon.GetRoomWeapon().GetName()}! Your attack power has increased by {dungeon.GetRoomWeapon().GetDamage()}.\n");
                         userChar.SetDamage(dungeon.GetRoomWeapon().GetDamage());
                     }
+                    else if (dungeon.RoomHasPot(1))
+                    {
+                        Console.WriteLine($"You found an HP potion! Your health has increased by 10.\n");
+                        userChar.SetHealth(-10);
+                    }
 
                     if (dungeon.RoomHasMonster())
                     {
