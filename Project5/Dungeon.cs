@@ -29,7 +29,6 @@ namespace Project5
             this.lengthTot = random.Next(6, 11);
             this.heightTot = random.Next(2, 6);
             this.exitHeight = random.Next(0, (heightTot));
-            Console.WriteLine($"{heightTot} height tot, {exitHeight} exit height");
             this.activeRoom = 0;
             this.currLength = 0;
             this.currHeight = 0;
@@ -38,15 +37,15 @@ namespace Project5
             wepRoom = random.Next(2, (lengthTot * heightTot));
             if (random.NextDouble() < wepChance)
             {
-                wepType = new Sword("Sword", 3);
+                wepType = new Stick("Stick", 1);
             }
             else if (random.NextDouble() < (wepChance * 2))
             {
-                wepType = new Stick("Stick", 1);
+                wepType = new Knife("Knife", 2);
             }
             else if (random.NextDouble() < (wepChance * 3))
             {
-                wepType = new Knife("Knife", 2);
+                wepType = new Sword("Sword", 3);
             }
             else if (random.NextDouble() < (wepChance * 4))
             {
