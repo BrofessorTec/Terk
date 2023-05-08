@@ -37,15 +37,15 @@ namespace Project5
             wepRoom = random.Next(2, (lengthTot * heightTot));
             if (random.NextDouble() < wepChance)
             {
-                wepType = new Sword("Sword", 3);
+                wepType = new Stick("Stick", 1);
             }
             else if (random.NextDouble() < (wepChance * 2))
             {
-                wepType = new Stick("Stick", 1);
+                wepType = new Knife("Knife", 2);
             }
             else if (random.NextDouble() < (wepChance * 3))
             {
-                wepType = new Knife("Knife", 2);
+                wepType = new Sword("Sword", 3);
             }
             else if (random.NextDouble() < (wepChance * 4))
             {
