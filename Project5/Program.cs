@@ -157,7 +157,7 @@ namespace Project5
                             Console.Clear();
                             Console.WriteLine(dungeon.ToString(1)); //testing new map here
                             //Console.WriteLine(dungeon.ToString(1)); //testing new map here
-                            Console.WriteLine("\nEnter any key to continue.");
+                            Console.WriteLine("Enter any key to continue.");
                             Console.ReadLine();
                             Console.Clear();
                         }

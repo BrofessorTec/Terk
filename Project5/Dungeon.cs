@@ -25,8 +25,8 @@ namespace Project5
         {
             Random random = new Random();
             this.player = player;
-            this.lengthTot = random.Next(5, 11);
-            this.heightTot = random.Next(2, 5);
+            this.lengthTot = random.Next(6, 11);
+            this.heightTot = random.Next(2, 6);
             this.activeRoom = 0;
             this.currLength = 0;
             this.currHeight = 0;
