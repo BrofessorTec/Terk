@@ -29,7 +29,6 @@ namespace Project5
             this.lengthTot = random.Next(6, 11);
             this.heightTot = random.Next(2, 6);
             this.exitHeight = random.Next(0, (heightTot));
-            Console.WriteLine($"{heightTot} height tot, {exitHeight} exit height");
             this.activeRoom = 0;
             this.currLength = 0;
             this.currHeight = 0;
