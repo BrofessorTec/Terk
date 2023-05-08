@@ -13,6 +13,8 @@ namespace Project5
         private bool hasMonster;
         private bool leftDoor;
         private bool rightDoor;
+        private bool botDoor;
+        private bool topDoor;
         private bool exitDoor = false;
         private double monsterChance = 0.5;
         private Monster monster;
@@ -23,13 +25,17 @@ namespace Project5
         private Player player;
         private bool activeRoom = false;
 
-        public Cell(int cellNum, int totSize, int wepRoom, Weapon wepType, Player player) 
+        public Cell(int lengthNum, int heightNum, int heightTot, int totSize, int wepRoom, Weapon wepType, Player player)
         {
             Random random = new Random();
             monster = new Monster();
             this.player = player;
 
-            if ((random.NextDouble() < monsterChance) && cellNum != 0)  //generating the monster
+            if (lengthNum == 0 && heightNum == 0)
+            {
+                this.hasMonster = false;
+            }
+            else if ((random.NextDouble() < monsterChance))  //generating the monster
             {
                 this.hasMonster = true;
             }
@@ -38,62 +44,118 @@ namespace Project5
                 this.hasMonster = false;
             }
 
-            if (cellNum == 0)    //generating the doors for cells
+            if (heightNum == 0)
             {
-                leftDoor = false;
-                rightDoor = true;
-                exitDoor = false;
-                roomEntered = true;
-                activeRoom = true;
+                topDoor = false;
+                botDoor = true;
+                if (lengthNum == 0)    //generating the doors for cells
+                {
+                    leftDoor = false;
+                    rightDoor = true;
+                    exitDoor = false;
+                    roomEntered = true;
+                    activeRoom = true;
+                }
+                else if (lengthNum < (totSize - 1))
+                {
+                    leftDoor = true;
+                    rightDoor = true;
+                    exitDoor = false;
+                }
+                else if (lengthNum == (totSize - 1))
+                {
+                    leftDoor = true;
+                    rightDoor = true;
+                    exitDoor = true;
+                }
             }
-            else if (cellNum < (totSize-1)) 
+            else if (heightNum < (heightTot-1))
             {
-                leftDoor = true;
-                rightDoor = true;
-                exitDoor = false;
+                topDoor = true;
+                botDoor = true;
+                if (lengthNum == 0)    //generating the doors for cells
+                {
+                    leftDoor = false;
+                    rightDoor = true;
+                    exitDoor = false;
+                }
+                else if (lengthNum < (totSize - 1))
+                {
+                    leftDoor = true;
+                    rightDoor = true;
+                    exitDoor = false;
+                }
+                else if (lengthNum == (totSize - 1))
+                {
+                    leftDoor = true;
+                    rightDoor = true;
+                    exitDoor = true;
+                }
             }
-            else if (cellNum == (totSize-1))
+            else
             {
-                leftDoor = true;
-                rightDoor = true;
-                exitDoor = true;
+                topDoor = true;
+                botDoor = false;
+                if (lengthNum == 0)    //generating the doors for cells
+                {
+                    leftDoor = false;
+                    rightDoor = true;
+                    exitDoor = false;
+                }
+                else if (lengthNum < (totSize - 1))
+                {
+                    leftDoor = true;
+                    rightDoor = true;
+                    exitDoor = false;
+                }
+                else if (lengthNum == (totSize - 1))
+                {
+                    leftDoor = true;
+                    rightDoor = true;
+                    exitDoor = true;
+                }
             }
 
-            if (cellNum == wepRoom) //generating the weapon info
+            if ((lengthNum*heightNum) == wepRoom) //generating the weapon info
             {
                 this.hasWeapon = true;
                 roomWep = wepType;
             }
             else
-            { 
+            {
                 this.hasWeapon = false;
                 roomWep = null;
             }
         }
 
         public bool GetLeftDoor()
-        { 
-            return leftDoor; 
+        {
+            return leftDoor;
         }
 
-        public bool GetRightDoor() 
-        {  
-            return rightDoor; 
+        public bool GetRightDoor()
+        {
+            return rightDoor;
         }
 
-        public bool GetExitDoor() 
-        {  
-            return exitDoor; 
+        public bool GetTopDoor()
+        { return topDoor;}
+
+        public bool GetBotDoor() 
+        { return botDoor;}
+        public bool GetExitDoor()
+        {
+            return exitDoor;
         }
 
         public bool GetHasMonster()
-        { 
+        {
             if ((monster.GetHealth() <= 0) && hasMonster)
             {
                 hasMonster = false;
             }
             return hasMonster;
-        } 
+        }
 
         public bool GetHasWeapon(int checkType)
         {
@@ -123,7 +185,7 @@ namespace Project5
 
         public Monster GetMonster()
         {
-                return monster;
+            return monster;
         }
 
         public void SetRoomEntered()
@@ -273,12 +335,10 @@ namespace Project5
         public override string ToString()
         {
             string map = "";
-            bool doorRight = false;
-            bool doorLeft = false;
-            bool doorExit = false;
             string doorLeftIcon = "-";
             string doorRightIcon = "-";
-            string doorExitIcon = "-";
+            string doorBotIcon = "-";
+            string doorTopIcon = "-";
             string wallTopExitIcon = "-";
             string wallBotExitIcon = "-";
             string wepType = " ";
@@ -305,21 +365,28 @@ namespace Project5
 
                 if (GetRightDoor())
                 {
-                    doorRight = true;
                     doorRightIcon = "|";
                 }
 
                 if (GetLeftDoor())
                 {
-                    doorLeft = true;
                     doorLeftIcon = "|";
+                }
+
+                if (GetBotDoor())
+                {
+                    doorBotIcon = "=";
+                }
+
+                if (GetTopDoor())
+                {
+                    doorTopIcon = "=";
                 }
 
                 if (GetExitDoor())
                 {
                     /*doorExit = true;
                     doorExitIcon = "[]";*/   // for now since just displaying one cell, i can just override the right door icon for the exit
-                    doorRight = true;
                     doorRightIcon = " ";
                     wallTopExitIcon = "\\";
                     wallBotExitIcon = "/";
@@ -358,28 +425,28 @@ namespace Project5
                 {
                     if (GetWeapon().GetName().CompareTo("Stick") == 0 || GetWeapon().GetName().CompareTo("Sword") == 0)
                     {
-                        map += "-------" +
+                        map += $"---{doorTopIcon}---" +
                              $"-  {enemyType}  {wallTopExitIcon}" +
                              $"{doorLeftIcon}  {playerPos}  {doorRightIcon}" +
                              $"-  {wepType} {wallBotExitIcon}" +
-                             "-------";
+                             $"---{doorBotIcon}---";
                     }
                     else
                     {
-                        map += "-------" +
+                        map += $"---{doorTopIcon}---" +
                              $"-  {enemyType}  {wallTopExitIcon}" +
                              $"{doorLeftIcon}  {playerPos}  {doorRightIcon}" +
                              $"-  {wepType}  {wallBotExitIcon}" +
-                             "-------";
+                             $"---{doorBotIcon}---";
                     }
                 }
                 else
                 {
-                    map += "-------" +
+                    map += $"---{doorTopIcon}---" +
                          $"-  {enemyType}  {wallTopExitIcon}" +
                          $"{doorLeftIcon}  {playerPos}  {doorRightIcon}" +
                          $"-  {wepType}  {wallBotExitIcon}" +
-                         "-------";
+                         $"---{doorBotIcon}---";
                 }
             }
             else
