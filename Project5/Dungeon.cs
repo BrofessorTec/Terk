@@ -8,8 +8,12 @@ namespace Project5
 {
     public class Dungeon
     {
-        private int roomCount;
-        private int currRoom;
+        private int lengthTot;
+        private int heightTot;
+        private int activeRoom;
+        private int currLength;
+        private int currHeight;
+        private int cellCount;
         private Cell[] cells;
         private double wepChance = 0.2;
         private Weapon wepType;
@@ -21,9 +25,14 @@ namespace Project5
         {
             Random random = new Random();
             this.player = player;
-            this.roomCount = random.Next(5, 11);
-            this.currRoom = 0;
-            wepRoom = random.Next(roomCount);
+            this.lengthTot = random.Next(5, 11);
+            this.heightTot = random.Next(2, 5);
+            this.activeRoom = 0;
+            this.currLength = 0;
+            this.currHeight = 0;
+            this.cellCount = 0;
+            int cellOffset = 0;
+            wepRoom = random.Next(2, (lengthTot * heightTot));
             if (random.NextDouble() < wepChance)
             {
                 wepType = new Sword("Sword", 3);
@@ -45,17 +54,35 @@ namespace Project5
                 wepType = new Gun("Gun", 5);
             }
 
-            this.cells = new Cell[roomCount];
-            for (int i = 0; i < roomCount; i++)
+            this.cells = new Cell[lengthTot * heightTot];
+            while (cellCount < lengthTot * heightTot)
             {
-                cells[i] = new Cell(i, roomCount, wepRoom, wepType, player);
+                for (int j = 0; j < heightTot; j++)
+                {
+                    for (int i = 0; i < lengthTot; i++)
+                    {
+                        cells[i+cellOffset] = new Cell(i, j, heightTot, lengthTot, wepRoom, wepType, player);
+                        cellCount++;
+                    }
+                    cellOffset += lengthTot;
+                }
             }
 
         }
 
-        public int GetCurrRoom()
+        public int GetActiveRoom()
         {
-            return this.currRoom;
+            return this.activeRoom;
+        }
+
+        public int GetCurrHeight()
+        {
+            return this.currHeight;
+        }
+
+        public int GetCurrLength()
+        {
+            return this.currLength;
         }
 
         public string GetCellMap(int room)
@@ -65,11 +92,13 @@ namespace Project5
 
         public int GoLeft()
         {
-            if (cells[this.currRoom].GetLeftDoor())
+            if (cells[this.activeRoom].GetLeftDoor())
             {
-                cells[this.currRoom].SetActiveRoom(false);
-                currRoom--;
-                cells[this.currRoom].SetActiveRoom(true);
+                cells[this.activeRoom].SetActiveRoom(false);
+                activeRoom--;
+                currLength--;
+                cells[this.activeRoom].SetActiveRoom(true);
+                cells[this.activeRoom].SetRoomEntered();
                 return 1;
             }
             else { return 0; }
@@ -77,71 +106,118 @@ namespace Project5
 
         public int GoRight()
         {
-            if (cells[this.currRoom].GetExitDoor())
+            if (cells[this.activeRoom].GetExitDoor())
             {
                 //Console.WriteLine("Congrats! You win!"); //can move this win code to the driver probably for it to handle
                 return -1;
             }
-            else if (cells[this.currRoom].GetRightDoor())
+            else if (cells[this.activeRoom].GetRightDoor())
             {
-                cells[this.currRoom].SetActiveRoom(false);
-                currRoom++;
-                cells[this.currRoom].SetActiveRoom(true);
-                cells[this.currRoom].SetRoomEntered();
+                cells[this.activeRoom].SetActiveRoom(false);
+                activeRoom++;
+                currLength++;
+                cells[this.activeRoom].SetActiveRoom(true);
+                cells[this.activeRoom].SetRoomEntered();
                 return 1;
             }
             else { return 0; }
         }
 
-        public int GetRoomCount()
+        public int GoUp()
         {
-            return this.roomCount;
+            if (cells[this.activeRoom].GetTopDoor())
+            {
+                cells[this.activeRoom].SetActiveRoom(false);
+                //currHeight = currHeight - lengthTot;  //this wont work yet since it is using the array with the .activeRoom.... need to maybe 
+                currHeight--;
+                //activeRoom = ((activeRoom + 1) * (currHeight + 1));
+                activeRoom = activeRoom - lengthTot;
+                cells[this.activeRoom].SetActiveRoom(true);
+                cells[this.activeRoom].SetRoomEntered();
+                return 1;
+            }
+            else { return 0; }
+        }
+
+        public int GoDown()
+        {
+            if (cells[this.activeRoom].GetBotDoor())
+            {
+                cells[this.activeRoom].SetActiveRoom(false);
+                //currHeight = currHeight + lengthTot;
+                currHeight++;
+                activeRoom = activeRoom + lengthTot;
+                cells[this.activeRoom].SetActiveRoom(true);
+                cells[this.activeRoom].SetRoomEntered();
+                return 1;
+            }
+            else { return 0; }
+        }
+
+        public int GetLenghtCount()
+        {
+            return this.lengthTot;
+        }
+
+        public int GetHeightCount()
+        {
+            return this.heightTot;
         }
 
         public bool GetRightDoor()
         {
-            return cells[this.currRoom].GetRightDoor();
+            return cells[this.activeRoom].GetRightDoor();
         }
 
         public bool GetLeftDoor()
         {
-            return cells[this.currRoom].GetLeftDoor();
+            return cells[this.activeRoom].GetLeftDoor();
+        }
+
+        public bool GetTopDoor()
+        {
+            return cells[this.activeRoom].GetTopDoor();
+        }
+
+        public bool GetBotDoor()
+        {
+            return cells[this.activeRoom].GetBotDoor();
         }
 
         public bool GetExitDoor()
         {
-            return cells[this.currRoom].GetExitDoor();
+            return cells[this.activeRoom].GetExitDoor();
         }
 
         public bool RoomHasWep(int checkType)
         {
-            return cells[this.currRoom].GetHasWeapon(checkType);
+            return cells[this.activeRoom].GetHasWeapon(checkType);
         }
 
         public bool RoomHasMonster()
         {
-            return cells[this.currRoom].GetHasMonster();
+            return cells[this.activeRoom].GetHasMonster();
         }
 
         public bool RoomWepClaimed()
         {
-            return cells[this.currRoom].GetWepClaimed();
+            return cells[this.activeRoom].GetWepClaimed();
         }
         public Weapon GetRoomWeapon()
         {
-            return cells[this.currRoom].GetWeapon();
+            return cells[this.activeRoom].GetWeapon();
         }
 
         public Monster GetRoomMonster()
         {
-            return cells[this.currRoom].GetMonster();
+            return cells[this.activeRoom].GetMonster();
         }
 
         /*
         public override string ToString()  //this is old version that works decently well
         {
             string map = "";
-            for (int i = 0;i < roomCount; i++)
+            for (int i = 0;i < lengthTot; i++)
             {
                     map += cells[i].ToString(); //this doesn't look done yet?
             }
@@ -152,7 +228,7 @@ namespace Project5
         /*public override string ToString()  //this is newer version that works well but still vertical map
         {
             string map = "";
-            for (int i = 0;i < roomCount; i++)
+            for (int i = 0;i < lengthTot; i++)
             {
                 for (int j = 1; j <= cells[i].ToString().Length; j++)
                 {
@@ -166,22 +242,27 @@ namespace Project5
             return map;
         }*/
 
+
+
         public override string ToString()  //this is working with a horizontal map for 2d dungeon
         {
             string map = "";
             int loop = 0;
             int sev = 0;
-            int cellLayers = 1;  //this will need to be updated to count how many Rows exist in 2d map
+            int cellLayers = heightTot;  //this will need to be updated to count how many Rows exist in 2d map
             int cellLayerLoop = 0;
+            int cellOffset = 0;
+
+            cellOffset = currHeight * lengthTot;
             while (cellLayerLoop < cellLayers)
             {
                 while (loop < 5)
                 {
-                    for (int i = 1; i <= roomCount; i++)
+                    for (int i = 1; i <= lengthTot; i++)
                     {
                         for (int j = 1; j <= 7; j++)
                         {
-                            map += cells[i - 1].ToString()[(j + sev) - 1];
+                            map += cells[(i - 1)+cellOffset].ToString()[(j + sev) - 1];
                         }
                     }
                     loop++;
@@ -198,31 +279,79 @@ namespace Project5
             string map = "";
             int loop = 0;
             int sev = 0;
-            int cellLayers = 1;  //this will need to be updated to count how many Rows exist in 2d map
+            int cellLayers = heightTot;  //this will need to be updated to count how many Rows exist in 2d map
             int cellLayerLoop = 0;
+            int cellOffset = 0;
             while (cellLayerLoop < cellLayers)
             {
+                loop = 0;
+                sev = 0;
+                    while (loop < 5)
+                    {
+                        for (int i = 1; i <= lengthTot; i++)
+                        {
+                            for (int j = 1; j <= 7; j++)
+                            {
+                                map += cells[i - 1+cellOffset].ToString()[(j + sev) - 1];
+                            }
+                        }
+                        loop++;
+                        sev += 7;
+                        map += "\n";
+                    }
+                    cellLayerLoop++;
+                    cellOffset += lengthTot;
+            }
+            return map;
+        }
+
+        /*public string ToString(int mapType)  //testing to have a tostring for map row and whole map, working version
+        {
+            string map = "";
+            int loop = 0;
+            int sev = 0;
+            int cellLayers = heightTot;  //this will need to be updated to count how many Rows exist in 2d map
+            int cellLayerLoop = 0;
+            int cellOffset = 0;
+            if (mapType == 0)
+            {
+                cellOffset += currHeight * lengthTot;
                 while (loop < 5)
                 {
-                    for (int i = 1; i <= roomCount; i++)
+                    for (int i = 1; i <= lengthTot; i++)
                     {
                         for (int j = 1; j <= 7; j++)
                         {
-                            map += cells[i - 1].ToString()[(j + sev) - 1];
+                            map += cells[(i - 1)+cellOffset].ToString()[(j + sev) - 1];
                         }
                     }
                     loop++;
                     sev += 7;
                     map += "\n";
                 }
-                cellLayerLoop++;
-                if (mapType == 0)
+            }
+            else
+            {
+                while (cellLayerLoop < cellLayers)
                 {
-                    break;
+                    while (loop < 5)
+                    {
+                        for (int i = 1; i <= lengthTot; i++)
+                        {
+                            for (int j = 1; j <= 7; j++)
+                            {
+                                map += cells[(i - 1)].ToString()[(j + sev) - 1];
+                            }
+                        }
+                        loop++;
+                        sev += 7;
+                        map += "\n";
+                    }
+                    cellLayerLoop++;
                 }
             }
             return map;
-        }
+        }*/
 
         /*public string ToString(int type)  //this was a test but wasn't working well
         {
@@ -232,7 +361,7 @@ namespace Project5
             List<char[]> cellMap = new List<char[]>(listSize); //tried to change this to a list of char[] but this looks way worse
             for (int i = 1; i < 6; i++)
             {
-                for (int j = 1; j <= roomCount; j++)
+                for (int j = 1; j <= lengthTot; j++)
                 {
                     int offset = 0;
                     cellMap.Add(cells[j - 1].ToString().ToCharArray()); //this doesn't look done yet, also changed it to do list stuff here for testing

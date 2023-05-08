@@ -27,10 +27,10 @@ namespace Project5
                 try
                 {
                     //probably add the map to the top of the screen?
-                    Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                    Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
                     //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
-                    //Console.WriteLine(dungeon.GetCellMap(dungeon.GetCurrRoom())); //this also looks like it works for the single cell map
-                    Console.WriteLine(dungeon.ToString(0)); //testing new map here
+                    //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
+                    Console.WriteLine(dungeon.ToString()); //testing new map here
 
                     //will probably tweak it so that the default map shows your current row, and the View Map display alls rows and columns
 
@@ -74,10 +74,10 @@ namespace Project5
                                 Console.WriteLine("\nEnter any key to continue.");
                                 Console.ReadLine();
                                 Console.Clear();
-                                Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have 0 HP left.\n");  //this will just be for debugging, need to add map later
+                                Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have 0 HP left.\n");  //this will just be for debugging, need to add map later
                                 //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
-                                //Console.WriteLine(dungeon.GetCellMap(dungeon.GetCurrRoom())); //this also looks like it works for the single cell map
-                                Console.WriteLine(dungeon.ToString(0)); //testing new map here
+                                //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
+                                Console.WriteLine(dungeon.ToString()); //testing new map here
                                 Console.WriteLine($"{userChar.GetName()} is dead. The game is over!");
                                 gameOver = true;
                             }
@@ -86,10 +86,10 @@ namespace Project5
                                 Console.WriteLine("\nEnter any key to continue.");
                                 Console.ReadLine();
                                 Console.Clear();
-                                Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                                Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
                                 //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
-                                //Console.WriteLine(dungeon.GetCellMap(dungeon.GetCurrRoom())); //this also looks like it works for the single cell map
-                                Console.WriteLine(dungeon.ToString(0)); //testing new map here
+                                //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
+                                Console.WriteLine(dungeon.ToString()); //testing new map here
 
                             }
                         }
@@ -99,9 +99,9 @@ namespace Project5
                             Console.WriteLine("\nEnter any key to continue.");
                             Console.ReadLine();
                             Console.Clear();
-                            Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                            Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
                             //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
-                            //Console.WriteLine(dungeon.GetCellMap(dungeon.GetCurrRoom())); //this also looks like it works for the single cell map
+                            //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
                             Console.WriteLine(dungeon.ToString()); //testing new map here
                         }
                     }
@@ -109,7 +109,7 @@ namespace Project5
                     if (userChar.GetHealth() > 0)
                     {
                         Console.WriteLine("What would you like to do?" +
-                            "\nPlease enter \"Go East\" or \"Go West\" or \"View Map\"");
+                            "\nPlease enter \"Go East\" or \"Go West\" or \"Go North\" or \"Go South\" or \"View Map\"");
                         userDir = Console.ReadLine();
                         int dirCheck;
 
@@ -128,6 +128,24 @@ namespace Project5
                         else if (userDir.ToLower() == "go west")
                         {
                             dirCheck = dungeon.GoLeft();
+                            if (dirCheck == 0)
+                            {
+                                Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
+                                Console.ReadLine();
+                            }
+                        }
+                        else if (userDir.ToLower() == "go north")
+                        {
+                            dirCheck = dungeon.GoUp();
+                            if (dirCheck == 0)
+                            {
+                                Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
+                                Console.ReadLine();
+                            }
+                        }
+                        else if (userDir.ToLower() == "go south")
+                        {
+                            dirCheck = dungeon.GoDown();
                             if (dirCheck == 0)
                             {
                                 Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
@@ -188,10 +206,10 @@ namespace Project5
             return userName;
         }
 
-        public static string DisplayMap(Player player, Dungeon dungeon)
+        /*public static string DisplayMap(Player player, Dungeon dungeon)
         {
             string map = "";
-            int cellSize = dungeon.GetRoomCount();
+            int cellSize = dungeon.GetLenghtCount();
             //for (int i = 0; i < cellSize; i++)
             //{
             string enemyType;
@@ -259,8 +277,6 @@ namespace Project5
 
             if (dungeon.GetExitDoor())
             {
-                /*doorExit = true;
-                doorExitIcon = "[]";*/   // for now since just displaying one cell, i can just override the right door icon for the exit
                 doorRight = true;
                 doorRightIcon = " ";
                 wallTopExitIcon = "\\";
@@ -296,7 +312,7 @@ namespace Project5
             }
             //}
             return map;
-        }
+        }/*
 
 
         /*public void PlayerCombat(Player player, Monster monster, int Damage)  //this might be used for combat later? i think this would only be needed if there was multiple enemies at once and you need to select one
