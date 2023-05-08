@@ -1,17 +1,6 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading;
-/**
-* ------------------------------------------------------------------------
-* File Name: Project5
-* Project Name: Zork Game
-* ------------------------------------------------------------------------
-* Author's Name and Email: Tyler Campbell, tcampbell5@etsu.edu
-* Course-Section: CSCI-1260-002
-* Creation Date: 4/12/23
-* ------------------------------------------------------------------------
-* */
+
 
 namespace Project5
 {
@@ -26,7 +15,7 @@ namespace Project5
             string? userDir = "go east";
 
             userChar = new Player(GetPlayerName());
-            dungeon = new Dungeon();
+            dungeon = new Dungeon(userChar);
 
             Console.WriteLine($"You are very brave, {userChar.GetName()}.\nWelcome... to the cube.");
             Console.Write("\nEnter any key to continue.");
@@ -39,7 +28,11 @@ namespace Project5
                 {
                     //probably add the map to the top of the screen?
                     Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
-                    Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                    //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                    //Console.WriteLine(dungeon.GetCellMap(dungeon.GetCurrRoom())); //this also looks like it works for the single cell map
+                    Console.WriteLine(dungeon.ToString(0)); //testing new map here
+
+                    //will probably tweak it so that the default map shows your current row, and the View Map display alls rows and columns
 
                     if (dungeon.RoomHasWep(1))
                     {
@@ -82,7 +75,9 @@ namespace Project5
                                 Console.ReadLine();
                                 Console.Clear();
                                 Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have 0 HP left.\n");  //this will just be for debugging, need to add map later
-                                Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                                //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                                //Console.WriteLine(dungeon.GetCellMap(dungeon.GetCurrRoom())); //this also looks like it works for the single cell map
+                                Console.WriteLine(dungeon.ToString(0)); //testing new map here
                                 Console.WriteLine($"{userChar.GetName()} is dead. The game is over!");
                                 gameOver = true;
                             }
@@ -92,7 +87,10 @@ namespace Project5
                                 Console.ReadLine();
                                 Console.Clear();
                                 Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
-                                Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                                //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                                //Console.WriteLine(dungeon.GetCellMap(dungeon.GetCurrRoom())); //this also looks like it works for the single cell map
+                                Console.WriteLine(dungeon.ToString(0)); //testing new map here
+
                             }
                         }
                         if (userChar.GetHealth() > 0)
@@ -102,14 +100,16 @@ namespace Project5
                             Console.ReadLine();
                             Console.Clear();
                             Console.WriteLine($"The current room is cell {dungeon.GetCurrRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
-                            Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                            //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                            //Console.WriteLine(dungeon.GetCellMap(dungeon.GetCurrRoom())); //this also looks like it works for the single cell map
+                            Console.WriteLine(dungeon.ToString()); //testing new map here
                         }
                     }
 
                     if (userChar.GetHealth() > 0)
                     {
                         Console.WriteLine("What would you like to do?" +
-                            "\nPlease enter \"Go East\" or \"Go West\"");
+                            "\nPlease enter \"Go East\" or \"Go West\" or \"View Map\"");
                         userDir = Console.ReadLine();
                         int dirCheck;
 
@@ -134,15 +134,25 @@ namespace Project5
                                 Console.ReadLine();
                             }
                         }
+                        else if (userDir.ToLower() == "view map")
+                        {
+                            Console.Clear();
+                            Console.WriteLine(dungeon.ToString(1)); //testing new map here
+                            //Console.WriteLine(dungeon.ToString(1)); //testing new map here
+                            Console.WriteLine("\nEnter any key to continue.");
+                            Console.ReadLine();
+                            Console.Clear();
+                        }
                         else
                         {
                             throw new Exception();
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     Console.WriteLine($"\nI do not know what you mean, {userChar.GetName()}.\nEnter any key to continue.");
+                    //Console.WriteLine($"{ex.Message}"); this is for troubleshooting
                     Console.ReadLine();
                     Console.Clear();
                 }
@@ -159,7 +169,7 @@ namespace Project5
             {
                 try
                 {
-                    Console.Write("Hello and welcome to Zork! \nWhat is your name, adventurer?\nName: ");
+                    Console.Write("Hello and welcome to Terk! \nWhat is your name, adventurer?\nName: ");
                     userName = Console.ReadLine();
                     if (userName == "")
                     {

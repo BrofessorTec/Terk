@@ -1,15 +1,4 @@
-﻿/**
-* ------------------------------------------------------------------------
-* File Name: Project5
-* Project Name: Zork Game
-* ------------------------------------------------------------------------
-* Author's Name and Email: Tyler Campbell, tcampbell5@etsu.edu
-* Course-Section: CSCI-1260-002
-* Creation Date: 4/12/23
-* ------------------------------------------------------------------------
-* */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +8,10 @@ namespace Project5
 {
     public abstract class Participant
     {
+        protected string name;
+        protected int hp;
+        protected double atkChance;
+        protected int damage;
         public abstract int Attack();
         public abstract string GetName();
         public abstract int GetHealth();
