@@ -134,6 +134,11 @@ namespace Project5
                                 Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
                                 Console.ReadLine();
                             }
+                            else if (dirCheck == 2)
+                            {
+                                Console.WriteLine("\nThis door is locked! You must find another way out.");
+                                Console.ReadLine();
+                            }
                         }
                         else if (userDir.ToLower() == "go west")
                         {
@@ -141,6 +146,11 @@ namespace Project5
                             if (dirCheck == 0)
                             {
                                 Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
+                                Console.ReadLine();
+                            }
+                            else if (dirCheck == 2)
+                            {
+                                Console.WriteLine("\nThis door is locked! You must find another way out.");
                                 Console.ReadLine();
                             }
                         }
@@ -152,6 +162,11 @@ namespace Project5
                                 Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
                                 Console.ReadLine();
                             }
+                            else if (dirCheck == 2)
+                            {
+                                Console.WriteLine("\nThis door is locked! You must find another way out.");
+                                Console.ReadLine();
+                            }
                         }
                         else if (userDir.ToLower() == "go south")
                         {
@@ -159,6 +174,11 @@ namespace Project5
                             if (dirCheck == 0)
                             {
                                 Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
+                                Console.ReadLine();
+                            }
+                            else if (dirCheck == 2)
+                            {
+                                Console.WriteLine("\nThis door is locked! You must find another way out.");
                                 Console.ReadLine();
                             }
                         }
