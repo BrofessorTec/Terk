@@ -15,6 +15,10 @@ namespace Project5
         private bool rightDoor;
         private bool botDoor;
         private bool topDoor;
+        private bool leftDoorLock;
+        private bool rightDoorLock;
+        private bool botDoorLock;
+        private bool topDoorLock;
         private bool exitDoor = false;
         private double monsterChance = 0.5;
         private Monster monster;
@@ -34,6 +38,10 @@ namespace Project5
             this.player = player;
             this.hasPotion = false;
             this.potClaimed = false;
+            topDoorLock = false;
+            botDoorLock = false;
+            leftDoorLock = false; 
+            rightDoorLock = false;
 
             if (lengthNum == 0 && heightNum == 0)
             {
@@ -74,6 +82,14 @@ namespace Project5
                     {
                         rightDoor = true;
                         exitDoor = true;
+                        if (random.NextDouble() < 0.5)
+                        {
+                            botDoorLock = true;
+                        }
+                        else
+                        {
+                            leftDoorLock = true;
+                        }
                     }
                 }
             }
@@ -101,6 +117,21 @@ namespace Project5
                     {
                         rightDoor = true;
                         exitDoor = true;
+                        if (random.NextDouble() < 0.33)
+                        {
+                            botDoorLock = true;
+                            topDoorLock = true;
+                        }
+                        else if (random.NextDouble() < 0.66)
+                        {
+                            topDoorLock = true;
+                            leftDoorLock = true;
+                        }
+                        else
+                        {
+                            leftDoorLock = true;
+                            botDoorLock = true;
+                        }
                     }
                 }
             }
@@ -128,6 +159,15 @@ namespace Project5
                     {
                         rightDoor = true;
                         exitDoor = true;
+                        if (random.NextDouble() < 0.5)
+                        {
+                            topDoorLock = true;
+                        }
+                        else
+                        {
+                            leftDoorLock = true;
+                        }
+
                     }
                 }
             }
@@ -166,15 +206,69 @@ namespace Project5
         }
 
         public bool GetTopDoor()
-        { return topDoor; }
+        { 
+            return topDoor; 
+        }
 
         public bool GetBotDoor()
-        { return botDoor; }
+        { 
+            return botDoor; 
+        }
+
         public bool GetExitDoor()
         {
             return exitDoor;
         }
 
+        public bool GetTopDoorLock()  //all of these gets and sets for doors could probably be one method that takes in a value telling it which door it is..
+        {
+            return topDoorLock;
+        }
+
+        public void SetTopDoorLock(bool doorLock)
+        {
+            if (doorLock)
+            {
+                this.topDoor = false;
+            }
+        }
+
+        public void SetBotDoorLock(bool doorLock)
+        {
+            if (doorLock)
+            {
+                this.botDoor = false;
+            }
+        }
+        public bool GetBotDoorLock()
+        {
+            return botDoorLock;
+        }
+
+        public bool GetLeftDoorLock()  //all of these gets and sets for doors could probably be one method that takes in a value telling it which door it is..
+        {
+            return leftDoorLock;
+        }
+
+        public void SetLeftDoorLock(bool doorLock)
+        {
+            if (doorLock)
+            {
+                this.leftDoor = false;
+            }
+        }
+
+        public void SetRightDoorLock(bool doorLock)
+        {
+            if (doorLock)
+            {
+                this.rightDoor = false;
+            }
+        }
+        public bool GetRightDoorLock()
+        {
+            return rightDoorLock;
+        }
         public bool GetHasMonster()
         {
             if ((monster.GetHealth() <= 0) && hasMonster)

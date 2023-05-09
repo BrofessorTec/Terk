@@ -94,7 +94,30 @@ namespace Project5
 
         public int GoLeft()
         {
-            if (cells[this.activeRoom].GetLeftDoor())
+            if (cells[this.activeRoom].GetLeftDoorLock())
+            {
+                cells[this.activeRoom].SetLeftDoorLock(cells[this.activeRoom].GetLeftDoorLock());
+                return 2;
+            }
+            else if (currLength > 0)
+            {
+                if (cells[this.activeRoom - 1].GetRightDoorLock())
+                {
+                    cells[this.activeRoom].SetRightDoorLock(cells[this.activeRoom - 1].GetRightDoorLock());
+                    return 2;
+                }
+                else if (cells[this.activeRoom].GetLeftDoor())
+                {
+                    cells[this.activeRoom].SetActiveRoom(false);
+                    activeRoom--;
+                    currLength--;
+                    cells[this.activeRoom].SetActiveRoom(true);
+                    cells[this.activeRoom].SetRoomEntered();
+                    return 1;
+                }
+                else { return 0; }
+            }  //testing this
+            else if (cells[this.activeRoom].GetLeftDoor())
             {
                 cells[this.activeRoom].SetActiveRoom(false);
                 activeRoom--;
@@ -113,6 +136,29 @@ namespace Project5
                 //Console.WriteLine("Congrats! You win!"); //can move this win code to the driver probably for it to handle
                 return -1;
             }
+            else if (cells[this.activeRoom].GetRightDoorLock())
+            {
+                cells[this.activeRoom].SetRightDoorLock(cells[this.activeRoom].GetRightDoorLock());
+                return 2;
+            }
+            else if (currLength < lengthTot)
+            {
+                if (cells[this.activeRoom + 1].GetLeftDoorLock())
+                {
+                    cells[this.activeRoom].SetRightDoorLock(cells[this.activeRoom + 1].GetLeftDoorLock());
+                    return 2;
+                }
+                else if (cells[this.activeRoom].GetRightDoor())
+                {
+                    cells[this.activeRoom].SetActiveRoom(false);
+                    activeRoom++;
+                    currLength++;
+                    cells[this.activeRoom].SetActiveRoom(true);
+                    cells[this.activeRoom].SetRoomEntered();
+                    return 1;
+                }
+                else { return 0; }
+            }  //testing this
             else if (cells[this.activeRoom].GetRightDoor())
             {
                 cells[this.activeRoom].SetActiveRoom(false);
@@ -127,7 +173,31 @@ namespace Project5
 
         public int GoUp()
         {
-            if (cells[this.activeRoom].GetTopDoor())
+            if (cells[this.activeRoom].GetTopDoorLock())
+            {
+                cells[this.activeRoom].SetTopDoorLock(cells[this.activeRoom].GetTopDoorLock());
+                return 2;
+            }
+            else if (currHeight > 0)
+            {
+                if (cells[this.activeRoom - lengthTot].GetBotDoorLock())
+                {
+                    cells[this.activeRoom].SetTopDoorLock(cells[this.activeRoom - lengthTot].GetBotDoorLock());
+                    return 2;
+                }
+                else if (cells[this.activeRoom].GetTopDoor())
+                {
+                    cells[this.activeRoom].SetActiveRoom(false);
+                    //currHeight = currHeight + lengthTot;
+                    currHeight--;
+                    activeRoom = activeRoom - lengthTot;
+                    cells[this.activeRoom].SetActiveRoom(true);
+                    cells[this.activeRoom].SetRoomEntered();
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (cells[this.activeRoom].GetTopDoor())
             {
                 cells[this.activeRoom].SetActiveRoom(false);
                 //currHeight = currHeight - lengthTot;  //this wont work yet since it is using the array with the .activeRoom.... need to maybe 
@@ -138,12 +208,39 @@ namespace Project5
                 cells[this.activeRoom].SetRoomEntered();
                 return 1;
             }
-            else { return 0; }
+            else 
+            { 
+                return 0; 
+            }
         }
 
         public int GoDown()
         {
-            if (cells[this.activeRoom].GetBotDoor())
+            if (cells[this.activeRoom].GetBotDoorLock())
+            {
+                cells[this.activeRoom].SetBotDoorLock(cells[this.activeRoom].GetBotDoorLock());
+                return 2;
+            }
+            else if (currHeight < heightTot)  
+            {
+                if (cells[this.activeRoom + lengthTot].GetTopDoorLock())
+                {
+                    cells[this.activeRoom].SetBotDoorLock(cells[this.activeRoom + lengthTot].GetTopDoorLock());  // for better performance could just make this Set bool be "true" since this if was true
+                    return 2;
+                }
+                else if (cells[this.activeRoom].GetBotDoor())
+                {
+                    cells[this.activeRoom].SetActiveRoom(false);
+                    //currHeight = currHeight + lengthTot;
+                    currHeight++;
+                    activeRoom = activeRoom + lengthTot;
+                    cells[this.activeRoom].SetActiveRoom(true);
+                    cells[this.activeRoom].SetRoomEntered();
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (cells[this.activeRoom].GetBotDoor())
             {
                 cells[this.activeRoom].SetActiveRoom(false);
                 //currHeight = currHeight + lengthTot;
@@ -181,9 +278,18 @@ namespace Project5
             return cells[this.activeRoom].GetTopDoor();
         }
 
+        public bool GetTopDoorLock()
+        {
+            return cells[this.activeRoom].GetTopDoorLock();
+        }
         public bool GetBotDoor()
         {
             return cells[this.activeRoom].GetBotDoor();
+        }
+
+        public bool GetBotDoorLock()
+        {
+            return cells[this.activeRoom].GetBotDoorLock();
         }
 
         public bool GetExitDoor()
