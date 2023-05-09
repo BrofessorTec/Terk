@@ -120,14 +120,17 @@ namespace Project5
                         if (random.NextDouble() < 0.33)
                         {
                             botDoorLock = true;
+                            topDoorLock = true;
                         }
                         else if (random.NextDouble() < 0.66)
                         {
                             topDoorLock = true;
+                            leftDoorLock = true;
                         }
                         else
                         {
                             leftDoorLock = true;
+                            botDoorLock = true;
                         }
                     }
                 }
