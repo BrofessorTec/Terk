@@ -108,7 +108,7 @@ namespace Project5
                     leftDoor = true;
                     rightDoor = true;
                     exitDoor = false;
-                }
+                    }
                 else if (lengthNum == (lengthTot - 1))
                 {
                     leftDoor = true;
