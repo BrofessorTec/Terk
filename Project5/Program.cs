@@ -215,7 +215,7 @@ namespace Project5
                     }
                     Console.Clear();
                 }
-                Console.ReadLine();  //pausing the console before closing out of the game
+                //Console.ReadLine();  //pausing the console before closing out of the game
 
                 while (!validContinue)
                 {
