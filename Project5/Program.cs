@@ -12,204 +12,239 @@ namespace Project5
             Dungeon dungeon;
             Monster cellMonster;
             bool gameOver = false;
+            bool gameContinue = true;
+            string? userContinue = "yes";
             string? userDir = "go east";
+            bool validContinue = false;
+            string playerName;
 
-            userChar = new Player(GetPlayerName());
-            dungeon = new Dungeon(userChar);
+            playerName = GetPlayerName();
 
-            Console.WriteLine($"You are very brave, {userChar.GetName()}.\nWelcome... to the cube.");
-            Console.Write("\nEnter any key to continue.");
-            Console.ReadLine();
-            Console.Clear();
-
-            while (!gameOver)  //run a loop of turns until the player reaches exit or reaches zero hp
+            while (gameContinue)
             {
-                try
+                userChar = new Player(playerName);
+                dungeon = new Dungeon(userChar);
+                validContinue = false;
+                userContinue = null;
+
+                Console.WriteLine($"You are very brave, {userChar.GetName()}.\nWelcome... to the cube.");
+                Console.Write("\nEnter any key to continue.");
+                Console.ReadLine();
+                Console.Clear();
+                while (!gameOver)  //run a loop of turns until the player reaches exit or reaches zero hp
                 {
-                    //probably add the map to the top of the screen?
-                    Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
-                    //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
-                    //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
-                    Console.WriteLine(dungeon.ToString()); //testing new map here
-
-                    //will probably tweak it so that the default map shows your current row, and the View Map display alls rows and columns
-
-                    if (dungeon.RoomHasWep(1))
+                    try
                     {
-                        Console.WriteLine($"You found a {dungeon.GetRoomWeapon().GetName()}! Your attack power has increased by {dungeon.GetRoomWeapon().GetDamage()}.\n");
-                        userChar.SetDamage(dungeon.GetRoomWeapon().GetDamage());
-                    }
-                    else if (dungeon.RoomHasPot(1))
-                    {
-                        Console.WriteLine($"You found an HP potion! Your health has increased by 10.\n");
-                        userChar.SetHealth(-10);
-                    }
+                        //probably add the map to the top of the screen?
+                        Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                                                                                                                                                       //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                                                                                                                                                       //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
+                        Console.WriteLine(dungeon.ToString()); //testing new map here
 
-                    if (dungeon.RoomHasMonster())
-                    {
-                        cellMonster = dungeon.GetRoomMonster();
-                        Console.WriteLine($"There is a {cellMonster.GetName()} here!\n");
-                        while (cellMonster.GetHealth() > 0 && userChar.GetHealth() > 0)
+                        //will probably tweak it so that the default map shows your current row, and the View Map display alls rows and columns
+
+                        if (dungeon.RoomHasWep(1))
                         {
-                            if (userChar.Attack() != 0)
-                            {
-                                Console.WriteLine($"{userChar.GetName()} hits the {cellMonster.GetName()} with an attack for {userChar.GetDamage()} damage!");
-                                cellMonster.SetHealth(userChar.GetDamage());
-                            }
-                            else
-                            {
-                                Console.WriteLine($"{userChar.GetName()} misses with an attack!");
-                            }
+                            Console.WriteLine($"You found a {dungeon.GetRoomWeapon().GetName()}! Your attack power has increased by {dungeon.GetRoomWeapon().GetDamage()}.\n");
+                            userChar.SetDamage(dungeon.GetRoomWeapon().GetDamage());
+                        }
+                        else if (dungeon.RoomHasPot(1))
+                        {
+                            Console.WriteLine($"You found an HP potion! Your health has increased by 10.\n");
+                            userChar.SetHealth(-10);
+                        }
 
-                            if (cellMonster.GetHealth() > 0)
+                        if (dungeon.RoomHasMonster())
+                        {
+                            cellMonster = dungeon.GetRoomMonster();
+                            Console.WriteLine($"There is a {cellMonster.GetName()} here!\n");
+                            while (cellMonster.GetHealth() > 0 && userChar.GetHealth() > 0)
                             {
-                                if (cellMonster.Attack() != 0)
+                                if (userChar.Attack() != 0)
                                 {
-                                    Console.WriteLine($"{cellMonster.GetName()} hits {userChar.GetName()} with an attack for {cellMonster.GetDamage()} damage!");
-                                    userChar.SetHealth(cellMonster.GetDamage());
+                                    Console.WriteLine($"{userChar.GetName()} hits the {cellMonster.GetName()} with an attack for {userChar.GetDamage()} damage!");
+                                    cellMonster.SetHealth(userChar.GetDamage());
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"{cellMonster.GetName()} misses {userChar.GetName()} with an attack!");
+                                    Console.WriteLine($"{userChar.GetName()} misses with an attack!");
+                                }
+
+                                if (cellMonster.GetHealth() > 0)
+                                {
+                                    if (cellMonster.Attack() != 0)
+                                    {
+                                        Console.WriteLine($"{cellMonster.GetName()} hits {userChar.GetName()} with an attack for {cellMonster.GetDamage()} damage!");
+                                        userChar.SetHealth(cellMonster.GetDamage());
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"{cellMonster.GetName()} misses {userChar.GetName()} with an attack!");
+                                    }
+                                }
+
+                                if (userChar.GetHealth() <= 0)
+                                {
+                                    Console.WriteLine("\nEnter any key to continue.");
+                                    Console.ReadLine();
+                                    Console.Clear();
+                                    Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have 0 HP left.\n");  //this will just be for debugging, need to add map later
+                                                                                                                                              //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                                                                                                                                              //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
+                                    Console.WriteLine(dungeon.ToString(1)); //testing new map here
+                                    Console.WriteLine($"{userChar.GetName()} is dead. The game is over!");
+                                    gameOver = true;
+                                }
+                                if (cellMonster.GetHealth() > 0)
+                                {
+                                    Console.WriteLine("\nEnter any key to continue.");
+                                    Console.ReadLine();
+                                    Console.Clear();
+                                    Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                                                                                                                                                                   //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                                                                                                                                                                   //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
+                                    Console.WriteLine(dungeon.ToString()); //testing new map here
+
                                 }
                             }
-
-                            if (userChar.GetHealth() <= 0)
+                            if (userChar.GetHealth() > 0)
                             {
-                                Console.WriteLine("\nEnter any key to continue.");
-                                Console.ReadLine();
-                                Console.Clear();
-                                Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have 0 HP left.\n");  //this will just be for debugging, need to add map later
-                                //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
-                                //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
-                                Console.WriteLine(dungeon.ToString(1)); //testing new map here
-                                Console.WriteLine($"{userChar.GetName()} is dead. The game is over!");
-                                gameOver = true;
-                            }
-                            if (cellMonster.GetHealth() > 0)
-                            {
+                                Console.WriteLine($"\n{userChar.GetName()} has defeated the {cellMonster.GetName()}!");
                                 Console.WriteLine("\nEnter any key to continue.");
                                 Console.ReadLine();
                                 Console.Clear();
                                 Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
-                                //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
-                                //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
+                                                                                                                                                               //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
+                                                                                                                                                               //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
                                 Console.WriteLine(dungeon.ToString()); //testing new map here
-
                             }
                         }
+
                         if (userChar.GetHealth() > 0)
                         {
-                            Console.WriteLine($"\n{userChar.GetName()} has defeated the {cellMonster.GetName()}!");
-                            Console.WriteLine("\nEnter any key to continue.");
-                            Console.ReadLine();
-                            Console.Clear();
-                            Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
-                            //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
-                            //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
-                            Console.WriteLine(dungeon.ToString()); //testing new map here
-                        }
-                    }
+                            Console.WriteLine("What would you like to do?" +
+                                "\nPlease enter \"Go East\" or \"Go West\" or \"Go North\" or \"Go South\" or \"View Map\"");
+                            userDir = Console.ReadLine();
+                            int dirCheck;
 
-                    if (userChar.GetHealth() > 0)
-                    {
-                        Console.WriteLine("What would you like to do?" +
-                            "\nPlease enter \"Go East\" or \"Go West\" or \"Go North\" or \"Go South\" or \"View Map\"");
-                        userDir = Console.ReadLine();
-                        int dirCheck;
-
-                        if (userDir.ToLower() == "go east")
-                        {
-                            dirCheck = dungeon.GoRight();
-                            if (dirCheck == -1)
+                            if (userDir.ToLower() == "go east")
+                            {
+                                dirCheck = dungeon.GoRight();
+                                if (dirCheck == -1)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine(dungeon.ToString(1));
+                                    Console.WriteLine($"You have beaten the dungeon, {userChar.GetName()}! You win!");
+                                    Console.ReadLine();  //pausing the console before closing out of the game
+                                    gameOver = true;
+                                    break;
+                                }
+                                else if (dirCheck == 0)
+                                {
+                                    Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
+                                    Console.ReadLine();
+                                }
+                                else if (dirCheck == 2)
+                                {
+                                    Console.WriteLine("\nThis door is locked! You must find another way out.");
+                                    Console.ReadLine();
+                                }
+                            }
+                            else if (userDir.ToLower() == "go west")
+                            {
+                                dirCheck = dungeon.GoLeft();
+                                if (dirCheck == 0)
+                                {
+                                    Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
+                                    Console.ReadLine();
+                                }
+                                else if (dirCheck == 2)
+                                {
+                                    Console.WriteLine("\nThis door is locked! You must find another way out.");
+                                    Console.ReadLine();
+                                }
+                            }
+                            else if (userDir.ToLower() == "go north")
+                            {
+                                dirCheck = dungeon.GoUp();
+                                if (dirCheck == 0)
+                                {
+                                    Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
+                                    Console.ReadLine();
+                                }
+                                else if (dirCheck == 2)
+                                {
+                                    Console.WriteLine("\nThis door is locked! You must find another way out.");
+                                    Console.ReadLine();
+                                }
+                            }
+                            else if (userDir.ToLower() == "go south")
+                            {
+                                dirCheck = dungeon.GoDown();
+                                if (dirCheck == 0)
+                                {
+                                    Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
+                                    Console.ReadLine();
+                                }
+                                else if (dirCheck == 2)
+                                {
+                                    Console.WriteLine("\nThis door is locked! You must find another way out.");
+                                    Console.ReadLine();
+                                }
+                            }
+                            else if (userDir.ToLower() == "view map")
                             {
                                 Console.Clear();
-                                Console.WriteLine(dungeon.ToString(1));
-                                Console.WriteLine($"You have beaten the dungeon, {userChar.GetName()}! You win!");
-                                gameOver = true;
-                                break;
-                            }
-                            else if (dirCheck == 0)
-                            {
-                                Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
+                                Console.WriteLine(dungeon.ToString(1)); //testing new map here
+                                                                        //Console.WriteLine(dungeon.ToString(1)); //testing new map here
+                                Console.WriteLine("Enter any key to continue.");
                                 Console.ReadLine();
+                                Console.Clear();
                             }
-                            else if (dirCheck == 2)
+                            else
                             {
-                                Console.WriteLine("\nThis door is locked! You must find another way out.");
-                                Console.ReadLine();
+                                throw new Exception();
                             }
-                        }
-                        else if (userDir.ToLower() == "go west")
-                        {
-                            dirCheck = dungeon.GoLeft();
-                            if (dirCheck == 0)
-                            {
-                                Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
-                                Console.ReadLine();
-                            }
-                            else if (dirCheck == 2)
-                            {
-                                Console.WriteLine("\nThis door is locked! You must find another way out.");
-                                Console.ReadLine();
-                            }
-                        }
-                        else if (userDir.ToLower() == "go north")
-                        {
-                            dirCheck = dungeon.GoUp();
-                            if (dirCheck == 0)
-                            {
-                                Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
-                                Console.ReadLine();
-                            }
-                            else if (dirCheck == 2)
-                            {
-                                Console.WriteLine("\nThis door is locked! You must find another way out.");
-                                Console.ReadLine();
-                            }
-                        }
-                        else if (userDir.ToLower() == "go south")
-                        {
-                            dirCheck = dungeon.GoDown();
-                            if (dirCheck == 0)
-                            {
-                                Console.WriteLine($"\nSorry {userChar.GetName()}, but you can't go in that direction.\nEnter any key to continue.");
-                                Console.ReadLine();
-                            }
-                            else if (dirCheck == 2)
-                            {
-                                Console.WriteLine("\nThis door is locked! You must find another way out.");
-                                Console.ReadLine();
-                            }
-                        }
-                        else if (userDir.ToLower() == "view map")
-                        {
-                            Console.Clear();
-                            Console.WriteLine(dungeon.ToString(1)); //testing new map here
-                            //Console.WriteLine(dungeon.ToString(1)); //testing new map here
-                            Console.WriteLine("Enter any key to continue.");
-                            Console.ReadLine();
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            throw new Exception();
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"\nI do not know what you mean, {userChar.GetName()}.\nEnter any key to continue.");
-                    //Console.WriteLine($"{ex.Message}"); this is for troubleshooting
-                    Console.ReadLine();
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"\nI do not know what you mean, {userChar.GetName()}.\nEnter any key to continue.");
+                        //Console.WriteLine($"{ex.Message}"); this is for troubleshooting
+                        Console.ReadLine();
+                        Console.Clear();
+                    }
                     Console.Clear();
+                }
+
+                while (!validContinue)
+                {
+                    Console.Clear();
+                    Console.Write("Would you like to play again?" +
+                        "\nPlease enter \"Yes\" or \"No\" ");
+                    userContinue = Console.ReadLine();
+
+                    if (userContinue.ToLower() == "yes")
+                    {
+                        gameContinue = true;
+                        validContinue = true;
+                        gameOver = false;
+                    }
+                    else if (userContinue.ToLower() == "no")
+                    {
+                        gameContinue = false;
+                        validContinue = true;
+                    }
+                    else
+                    {
+                        validContinue = false;
+                    }
                 }
                 Console.Clear();
             }
-            Console.ReadLine();  //pausing the console before closing out of the game
         }
 
-        public static string GetPlayerName()
+            public static string GetPlayerName()
         {
             string? userName = "Dale";
             bool userNameValid = false;
