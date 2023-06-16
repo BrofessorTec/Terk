@@ -135,6 +135,7 @@ namespace Project5
                                     Console.Clear();
                                     Console.WriteLine(dungeon.ToString(1));
                                     Console.WriteLine($"You have beaten the dungeon, {userChar.GetName()}! You win!");
+                                    Console.ReadLine();  //pausing the console before closing out of the game
                                     gameOver = true;
                                     break;
                                 }
@@ -215,7 +216,6 @@ namespace Project5
                     }
                     Console.Clear();
                 }
-                //Console.ReadLine();  //pausing the console before closing out of the game
 
                 while (!validContinue)
                 {
