@@ -10,6 +10,7 @@ namespace Project5
     {
         protected string name;
         protected int hp;
+        protected int hpMax;
         protected double atkChance;
         protected int damage;
         public abstract int Attack();

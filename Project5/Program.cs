@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 
 
@@ -8,26 +9,68 @@ namespace Project5
     {
         public static void Main()
         {
-            Player userChar;
-            Dungeon dungeon;
-            Monster cellMonster;
+            Player userChar = null;
+            Dungeon dungeon = null;
+            Monster cellMonster = null;
             bool gameOver = false;
             bool gameContinue = true;
             string? userContinue = "yes";
+            string? userContinueChar = "yes";
             string? userDir = "go east";
             bool validContinue = false;
             string playerName;
+            bool newGameBlank = true;
+            int charWins = 0;
+            int highestWins = 0;
+            string highScoreName = "";
+            string[] scoreValues = new string[2];
 
-            playerName = GetPlayerName();
+            //playerName = GetPlayerName();
 
             while (gameContinue)
             {
-                userChar = new Player(playerName);
-                dungeon = new Dungeon(userChar);
-                validContinue = false;
-                userContinue = null;
+                if (newGameBlank)
+                {
+                    playerName = GetPlayerName();
+                    userChar = new Player(playerName);
+                    dungeon = new Dungeon(userChar);
+                    charWins = 0;
+                    validContinue = false;
+                    userContinue = null;
+                }
+                else
+                {
+                    // userChar = new Player(playerName);  #we want to use the same character but a new dungeon
+                    dungeon = new Dungeon(userChar);
+                    validContinue = false;
+                    userContinue = null;
+                }
+
+                scoreValues = FileRead();
+                highestWins = int.Parse(scoreValues[0]);
+                highScoreName = scoreValues[1];
 
                 Console.WriteLine($"You are very brave, {userChar.GetName()}.\nWelcome... to the cube.");
+                if (charWins == 1)
+                {
+                    Console.WriteLine($"You have cleared {charWins} dungeon.");
+                }
+                else if (charWins > 0 && charWins != 1)
+                {
+                    Console.WriteLine($"You have cleared {charWins} dungeons.");
+                }
+                if (highestWins == 0)
+                {
+                    Console.WriteLine($"The high score is {highestWins} dungeons cleared.");
+                }
+                else if (highestWins == 1)
+                {
+                    Console.WriteLine($"The high score is {highestWins} dungeon cleared by {highScoreName}.");
+                }
+                else if (highestWins > 0 && highestWins != 1)
+                {
+                    Console.WriteLine($"The high score is {highestWins} dungeons cleared in a row by {highScoreName}.");
+                }
                 Console.Write("\nEnter any key to continue.");
                 Console.ReadLine();
                 Console.Clear();
@@ -135,6 +178,13 @@ namespace Project5
                                     Console.Clear();
                                     Console.WriteLine(dungeon.ToString(1));
                                     Console.WriteLine($"You have beaten the dungeon, {userChar.GetName()}! You win!");
+                                    charWins++;
+                                    if (charWins > highestWins)
+                                    {
+                                        highestWins = charWins;
+                                        highScoreName = userChar.GetName();
+                                        WriteFile(highestWins, highScoreName);
+                                    }
                                     Console.ReadLine();  //pausing the console before closing out of the game
                                     gameOver = true;
                                     break;
@@ -226,9 +276,39 @@ namespace Project5
 
                     if (userContinue.ToLower() == "yes")
                     {
-                        gameContinue = true;
-                        validContinue = true;
-                        gameOver = false;
+                        Console.Clear();
+                        if (userChar.GetHealth() > 0)
+                        {
+                            Console.Write("Would you like to continue with this character?" +
+                                "\nPlease enter \"Yes\" or \"No\" ");
+                            userContinueChar = Console.ReadLine();
+                            if (userContinueChar.ToLower() == "yes")
+                            {
+                                gameContinue = true;
+                                newGameBlank = false;
+                                validContinue = true;
+                                gameOver = false;
+                            }
+
+                            else if (userContinueChar.ToLower() == "no")
+                            {
+                                gameContinue = true;
+                                validContinue = true;
+                                gameOver = false;
+                                newGameBlank = true;
+                            }
+                            else
+                            {
+                                validContinue = false;
+                            }
+                        }
+                        else
+                        {
+                            gameContinue = true;
+                            validContinue = true;
+                            gameOver = false;
+                            newGameBlank = true;
+                        }
                     }
                     else if (userContinue.ToLower() == "no")
                     {
@@ -269,6 +349,58 @@ namespace Project5
                 }
             }
             return userName;
+        }
+
+        public static void WriteFile(int highScore, string highScoreName)
+        {
+            string filePath = @"..\..\..\Text Files\highscore.txt";
+            string[] files = new string[2];
+
+            try
+            {
+                FileStream fcreate = File.Open(@"..\..\..\Text Files\highscore.txt", FileMode.Create);
+                using (StreamWriter wtr = new StreamWriter(fcreate))
+                {
+                    files[0] = highScore.ToString();
+                    files[1] = highScoreName;
+                    wtr.WriteLine(highScore);
+                    wtr.WriteLine(highScoreName);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Something went wrong with accessing the file: " + e.Message);
+            }
+        }
+        public static string[] FileRead()
+        {
+            //string filePath = @"..\..\..\Text Files\delimited.txt";
+            string filePath = @"..\..\..\Text Files\highscore.txt";
+            //List<string> highScoreValues = null;
+            string[] fields = new string[2];
+
+            try
+            {
+                using (StreamReader rdr = new StreamReader(filePath))
+                {
+                    int i = 0;
+                    //While there is still more text in the file we haven't processed
+                    while (rdr.Peek() != -1)
+                    {
+                        //Read the next line of data from the file
+                        string nextLineFromFile = rdr.ReadLine();
+                        //Console.WriteLine(nextLineFromFile);
+                        fields[i] = nextLineFromFile;
+                        i++;
+                    }
+                    return fields;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Something went wrong with accessing the file: " + e.Message);
+                return fields;
+            }
         }
 
         /*public static string DisplayMap(Player player, Dungeon dungeon)
