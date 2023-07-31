@@ -179,7 +179,7 @@ namespace Project5
             }
             else
             {
-                roomWep = null;
+                //roomWep = null;
                 if (lengthNum == 0 && heightNum == 0)
                 {
                     this.hasPotion = false;

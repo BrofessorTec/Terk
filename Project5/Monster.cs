@@ -21,6 +21,7 @@ namespace Project5
             {
                 this.name = "Orc";
                 hp = 20;
+                hpMax = hp;
                 atkChance = 0.8;
                 damage = 4;
             }
@@ -28,6 +29,7 @@ namespace Project5
             {
                 this.name = "Zombie";
                 hp = 17;
+                hpMax = hp;
                 atkChance = 0.8;
                 damage = 3;
             }
@@ -35,6 +37,7 @@ namespace Project5
             {
                 this.name = "Vampire";
                 hp = 25;
+                hpMax = hp;
                 atkChance = 0.8;
                 damage = 5;
             }

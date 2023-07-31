@@ -8,26 +8,63 @@ namespace Project5
     {
         public static void Main()
         {
-            Player userChar;
-            Dungeon dungeon;
-            Monster cellMonster;
+            Player userChar = null;
+            Dungeon dungeon = null;
+            Monster cellMonster = null;
             bool gameOver = false;
             bool gameContinue = true;
             string? userContinue = "yes";
+            string? userContinueChar = "yes";
             string? userDir = "go east";
             bool validContinue = false;
             string playerName;
+            bool newGameBlank = true;
+            int charWins = 0;
+            int highestWins = 0;
+            string highScoreName = "";
 
-            playerName = GetPlayerName();
+            //playerName = GetPlayerName();
 
             while (gameContinue)
             {
-                userChar = new Player(playerName);
-                dungeon = new Dungeon(userChar);
-                validContinue = false;
-                userContinue = null;
+                if (newGameBlank)
+                {
+                    playerName = GetPlayerName();
+                    userChar = new Player(playerName);
+                    dungeon = new Dungeon(userChar);
+                    charWins = 0;
+                    validContinue = false;
+                    userContinue = null;
+                }
+                else
+                {
+                    // userChar = new Player(playerName);  #we want to use the same character but a new dungeon
+                    dungeon = new Dungeon(userChar);
+                    validContinue = false;
+                    userContinue = null;
+                }
 
                 Console.WriteLine($"You are very brave, {userChar.GetName()}.\nWelcome... to the cube.");
+                if (charWins == 1)
+                {
+                    Console.WriteLine($"You have cleared {charWins} dungeon.");
+                }
+                else if (charWins > 0 && charWins != 1)
+                {
+                    Console.WriteLine($"You have cleared {charWins} dungeons.");
+                }
+                if (highestWins == 0)
+                {
+                    Console.WriteLine($"The high score is {highestWins} dungeons cleared.");
+                }
+                else if (highestWins == 1)
+                {
+                    Console.WriteLine($"The high score is {highestWins} dungeon cleared by {highScoreName}.");
+                }
+                else if (highestWins > 0 && highestWins != 1)
+                {
+                    Console.WriteLine($"The high score is {highestWins} dungeons cleared in a row by {highScoreName}.");
+                }
                 Console.Write("\nEnter any key to continue.");
                 Console.ReadLine();
                 Console.Clear();
@@ -135,6 +172,12 @@ namespace Project5
                                     Console.Clear();
                                     Console.WriteLine(dungeon.ToString(1));
                                     Console.WriteLine($"You have beaten the dungeon, {userChar.GetName()}! You win!");
+                                    charWins++;
+                                    if (charWins > highestWins)
+                                    {
+                                        highestWins = charWins;
+                                        highScoreName = userChar.GetName();
+                                    }
                                     Console.ReadLine();  //pausing the console before closing out of the game
                                     gameOver = true;
                                     break;
@@ -226,9 +269,39 @@ namespace Project5
 
                     if (userContinue.ToLower() == "yes")
                     {
-                        gameContinue = true;
-                        validContinue = true;
-                        gameOver = false;
+                        Console.Clear();
+                        if (userChar.GetHealth() > 0)
+                        {
+                            Console.Write("Would you like to continue with this character?" +
+                                "\nPlease enter \"Yes\" or \"No\" ");
+                            userContinueChar = Console.ReadLine();
+                            if (userContinueChar.ToLower() == "yes")
+                            {
+                                gameContinue = true;
+                                newGameBlank = false;
+                                validContinue = true;
+                                gameOver = false;
+                            }
+
+                            else if (userContinueChar.ToLower() == "no")
+                            {
+                                gameContinue = true;
+                                validContinue = true;
+                                gameOver = false;
+                                newGameBlank = true;
+                            }
+                            else
+                            {
+                                validContinue = false;
+                            }
+                        }
+                        else
+                        {
+                            gameContinue = true;
+                            validContinue = true;
+                            gameOver = false;
+                            newGameBlank = true;
+                        }
                     }
                     else if (userContinue.ToLower() == "no")
                     {
