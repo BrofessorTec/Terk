@@ -79,7 +79,7 @@ namespace Project5
                     try
                     {
                         //probably add the map to the top of the screen?
-                        Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                        Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this might just be for debugging, need to add map later
                                                                                                                                                        //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
                                                                                                                                                        //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
                         Console.WriteLine(dungeon.ToString()); //testing new map here
@@ -93,8 +93,17 @@ namespace Project5
                         }
                         else if (dungeon.RoomHasPot(1))
                         {
-                            Console.WriteLine($"You found an HP potion! Your health has increased by 10.\n");
-                            userChar.SetHealth(-10);
+                            Random random = new Random();
+                            if (random.NextDouble() < 0.15)
+                            {
+                                Console.WriteLine($"You found a special HP potion! Your health has increased by 20.\n");
+                                userChar.SetHealth(-20);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"You found an HP potion! Your health has increased by 10.\n");
+                                userChar.SetHealth(-10);
+                            }
                         }
 
                         if (dungeon.RoomHasMonster())
