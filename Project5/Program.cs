@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 
 
@@ -22,6 +23,7 @@ namespace Project5
             int charWins = 0;
             int highestWins = 0;
             string highScoreName = "";
+            string[] scoreValues = new string[2];
 
             //playerName = GetPlayerName();
 
@@ -43,6 +45,10 @@ namespace Project5
                     validContinue = false;
                     userContinue = null;
                 }
+
+                scoreValues = FileRead();
+                highestWins = int.Parse(scoreValues[0]);
+                highScoreName = scoreValues[1];
 
                 Console.WriteLine($"You are very brave, {userChar.GetName()}.\nWelcome... to the cube.");
                 if (charWins == 1)
@@ -177,6 +183,7 @@ namespace Project5
                                     {
                                         highestWins = charWins;
                                         highScoreName = userChar.GetName();
+                                        WriteFile(highestWins, highScoreName);
                                     }
                                     Console.ReadLine();  //pausing the console before closing out of the game
                                     gameOver = true;
@@ -342,6 +349,58 @@ namespace Project5
                 }
             }
             return userName;
+        }
+
+        public static void WriteFile(int highScore, string highScoreName)
+        {
+            string filePath = @"..\..\..\Text Files\highscore.txt";
+            string[] files = new string[2];
+
+            try
+            {
+                FileStream fcreate = File.Open(@"..\..\..\Text Files\highscore.txt", FileMode.Create);
+                using (StreamWriter wtr = new StreamWriter(fcreate))
+                {
+                    files[0] = highScore.ToString();
+                    files[1] = highScoreName;
+                    wtr.WriteLine(highScore);
+                    wtr.WriteLine(highScoreName);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Something went wrong with accessing the file: " + e.Message);
+            }
+        }
+        public static string[] FileRead()
+        {
+            //string filePath = @"..\..\..\Text Files\delimited.txt";
+            string filePath = @"..\..\..\Text Files\highscore.txt";
+            //List<string> highScoreValues = null;
+            string[] fields = new string[2];
+
+            try
+            {
+                using (StreamReader rdr = new StreamReader(filePath))
+                {
+                    int i = 0;
+                    //While there is still more text in the file we haven't processed
+                    while (rdr.Peek() != -1)
+                    {
+                        //Read the next line of data from the file
+                        string nextLineFromFile = rdr.ReadLine();
+                        //Console.WriteLine(nextLineFromFile);
+                        fields[i] = nextLineFromFile;
+                        i++;
+                    }
+                    return fields;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Something went wrong with accessing the file: " + e.Message);
+                return fields;
+            }
         }
 
         /*public static string DisplayMap(Player player, Dungeon dungeon)
