@@ -175,11 +175,11 @@ namespace Project5
                         if (userChar.GetHealth() > 0)
                         {
                             Console.WriteLine("What would you like to do?" +
-                                "\nPlease enter \"Go East\" or \"Go West\" or \"Go North\" or \"Go South\" or \"View Map\"");
+                                "\nPlease enter \"W\", \"A\", \"S\", \"D\" for movement or \"M\" for map.");
                             userDir = Console.ReadLine();
                             int dirCheck;
 
-                            if (userDir.ToLower() == "go east")
+                            if (userDir.ToLower() == "d")
                             {
                                 dirCheck = dungeon.GoRight();
                                 if (dirCheck == -1)
@@ -209,7 +209,7 @@ namespace Project5
                                     Console.ReadLine();
                                 }
                             }
-                            else if (userDir.ToLower() == "go west")
+                            else if (userDir.ToLower() == "a")
                             {
                                 dirCheck = dungeon.GoLeft();
                                 if (dirCheck == 0)
@@ -223,7 +223,7 @@ namespace Project5
                                     Console.ReadLine();
                                 }
                             }
-                            else if (userDir.ToLower() == "go north")
+                            else if (userDir.ToLower() == "w")
                             {
                                 dirCheck = dungeon.GoUp();
                                 if (dirCheck == 0)
@@ -237,7 +237,7 @@ namespace Project5
                                     Console.ReadLine();
                                 }
                             }
-                            else if (userDir.ToLower() == "go south")
+                            else if (userDir.ToLower() == "s")
                             {
                                 dirCheck = dungeon.GoDown();
                                 if (dirCheck == 0)
@@ -251,7 +251,7 @@ namespace Project5
                                     Console.ReadLine();
                                 }
                             }
-                            else if (userDir.ToLower() == "view map")
+                            else if (userDir.ToLower() == "m")
                             {
                                 Console.Clear();
                                 Console.WriteLine(dungeon.ToString(1)); //testing new map here
@@ -283,7 +283,7 @@ namespace Project5
                         "\nPlease enter \"Yes\" or \"No\" ");
                     userContinue = Console.ReadLine();
 
-                    if (userContinue.ToLower() == "yes")
+                    if (userContinue.ToLower() == "yes" || userContinue.ToLower() == "y")
                     {
                         Console.Clear();
                         if (userChar.GetHealth() > 0)
@@ -291,7 +291,7 @@ namespace Project5
                             Console.Write("Would you like to continue with this character?" +
                                 "\nPlease enter \"Yes\" or \"No\" ");
                             userContinueChar = Console.ReadLine();
-                            if (userContinueChar.ToLower() == "yes")
+                            if (userContinueChar.ToLower() == "yes" || userContinueChar.ToLower() == "y")
                             {
                                 gameContinue = true;
                                 newGameBlank = false;
@@ -299,7 +299,7 @@ namespace Project5
                                 gameOver = false;
                             }
 
-                            else if (userContinueChar.ToLower() == "no")
+                            else if (userContinueChar.ToLower() == "no" || userContinueChar.ToLower() == "n")
                             {
                                 gameContinue = true;
                                 validContinue = true;
@@ -319,7 +319,7 @@ namespace Project5
                             newGameBlank = true;
                         }
                     }
-                    else if (userContinue.ToLower() == "no")
+                    else if (userContinue.ToLower() == "no" || userContinue.ToLower() == "n")
                     {
                         gameContinue = false;
                         validContinue = true;
