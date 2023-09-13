@@ -16,10 +16,10 @@ namespace Project5
         public Player(string name)
         {
             this.name = name;
-            hp = 150; //set this back to 150 after testing
+            hp = 400; //set this back to 150 after testing
             hpMax = hp;
             atkChance = 0.9;   //need to calculate this into the combat
-            damage = 5;
+            damage = 40;   // can set this back to 5 after testing
         }
 
         public override int Attack()

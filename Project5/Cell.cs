@@ -82,14 +82,14 @@ namespace Project5
                     {
                         rightDoor = true;
                         exitDoor = true;
-                        if (random.NextDouble() < 0.5)
+                        /*if (random.NextDouble() < 0.5)
                         {
                             botDoorLock = true;
                         }
                         else
                         {
                             leftDoorLock = true;
-                        }
+                        }*/
                     }
                 }
             }
@@ -117,7 +117,7 @@ namespace Project5
                     {
                         rightDoor = true;
                         exitDoor = true;
-                        if (random.NextDouble() < 0.33)
+                        /*if (random.NextDouble() < 0.33)
                         {
                             botDoorLock = true;
                             topDoorLock = true;
@@ -131,7 +131,7 @@ namespace Project5
                         {
                             leftDoorLock = true;
                             botDoorLock = true;
-                        }
+                        }*/
                     }
                 }
             }
@@ -159,14 +159,14 @@ namespace Project5
                     {
                         rightDoor = true;
                         exitDoor = true;
-                        if (random.NextDouble() < 0.5)
+                        /*if (random.NextDouble() < 0.5)
                         {
                             topDoorLock = true;
                         }
                         else
                         {
                             leftDoorLock = true;
-                        }
+                        }*/
 
                     }
                 }
@@ -231,6 +231,10 @@ namespace Project5
             {
                 this.topDoor = false;
             }
+            /*else
+            {
+                this.topDoor = true;
+            }*/
         }
 
         public void SetBotDoorLock(bool doorLock)
@@ -239,6 +243,10 @@ namespace Project5
             {
                 this.botDoor = false;
             }
+            /*else
+            {
+                this.botDoor = true;
+            }*/
         }
         public bool GetBotDoorLock()
         {
@@ -256,6 +264,10 @@ namespace Project5
             {
                 this.leftDoor = false;
             }
+            /*else
+            {
+                this.leftDoor = true;
+            }*/
         }
 
         public void SetRightDoorLock(bool doorLock)
@@ -264,10 +276,77 @@ namespace Project5
             {
                 this.rightDoor = false;
             }
+            /*else
+            {
+                this.rightDoor = true;
+            }*/
         }
+
+        public void HideRightDoorLock()
+        {
+            this.rightDoorLock = true;
+        }
+
+        public void UnlockRightDoorLock()
+        {
+            this.rightDoorLock = false;
+        }
+
+        public void HideLeftDoorLock()
+        {
+            this.leftDoorLock = true;
+        }
+
+        public void UnlockLeftDoorLock()
+        {
+            this.leftDoorLock = false;
+        }
+
+        public void HideTopDoorLock()
+        {
+            this.topDoorLock = true;
+        }
+
+        public void UnlockTopDoorLock()
+        {
+            this.topDoorLock = false;
+        }
+
+        public void HideBotDoorLock()
+        {
+            this.botDoorLock = true;
+        }
+
+        public void UnlockBotDoorLock()
+        {
+            this.botDoorLock = false;
+        }
+
         public bool GetRightDoorLock()
         {
             return rightDoorLock;
+        }
+
+        public int GetTotalDoorUnlock()  //testing this new method to see if this can be used to determine how many doors should be locked or left open
+        {
+            int unlockNum = 0;
+            if (this.botDoor && !GetBotDoorLock())
+            {
+                unlockNum++;
+            }
+            if (this.topDoor && !GetTopDoorLock())
+            {
+                unlockNum++;
+            }
+            if (this.leftDoor && !GetLeftDoorLock())
+            {
+                unlockNum++;
+            }
+            if (this.rightDoor && !GetRightDoorLock())
+            {
+                unlockNum++;
+            }
+            return unlockNum;
         }
         public bool GetHasMonster()
         {
@@ -620,6 +699,169 @@ namespace Project5
                 map = "                                   ";  //a blank string long enough to count every character that would exist if the map was showing it
             }
 
+            return map;
+        }
+
+        public string CheatMap()
+        {
+            string map = "";
+            string doorLeftIcon = "-";
+            string doorRightIcon = "-";
+            string doorBotIcon = "-";
+            string doorTopIcon = "-";
+            string wallTopExitIcon = "-";
+            string wallBotExitIcon = "-";
+            string wepType = " ";
+            string enemyType = " ";
+            //string playerPos = " ";
+
+            if (true)
+            {
+                /*if (activeRoom)
+                {
+                    if (player.GetHealth() > 0)  //adjust the map to just display the current room for now.. can't get multiple rooms to display correctly
+                    {
+                        playerPos = "P";
+                    }
+                    else
+                    {
+                        playerPos = "X";
+                    }
+                }
+                else
+                {
+                    playerPos = " ";
+                }*/
+
+                if (GetRightDoor())
+                {
+                    doorRightIcon = "|";
+                }
+                if (GetRightDoorLock())
+                {
+                    doorRightIcon = "-";
+                }
+
+                if (GetLeftDoor())
+                {
+                    doorLeftIcon = "|";
+                }
+                if (GetLeftDoorLock())
+                {
+                    doorLeftIcon = "-";
+                }
+
+                if (GetBotDoor())
+                {
+                    doorBotIcon = "=";
+                }
+                if (GetBotDoorLock())
+                {
+                    doorBotIcon = "-";
+                }
+
+                if (GetTopDoor())
+                {
+                    doorTopIcon = "=";
+                }
+                if (GetTopDoorLock())
+                {
+                    doorTopIcon = "-";
+                }
+
+                if (GetExitDoor())
+                {
+                    /*doorExit = true;
+                    doorExitIcon = "[]";*/   // for now since just displaying one cell, i can just override the right door icon for the exit
+                    doorRightIcon = " ";
+                    wallTopExitIcon = "\\";
+                    wallBotExitIcon = "/";
+                }
+
+                if (GetHasWeapon(0))
+                {
+                    if (GetWeapon().GetName().CompareTo("Stick") == 0)
+                    {
+                        wepType = "St";
+                    }
+                    else if (GetWeapon().GetName().CompareTo("Sword") == 0)
+                    {
+                        wepType = "Sw";
+                    }
+                    else
+                    {
+                        wepType = GetWeapon().GetName()[0].ToString();
+                    }
+                }
+                else if (GetHasPotion(0))
+                {
+                    wepType = "HP";
+                }
+                else
+                {
+                    wepType = " ";
+                }
+
+                if (GetHasMonster())
+                {
+                    enemyType = GetMonster().GetName()[0].ToString();
+                }
+                else
+                {
+                    enemyType = " ";
+                }
+
+                if (GetHasPotion(0))
+                {
+                    if (wepType.ToString().CompareTo("HP") == 0)
+                    {
+                        map += $"---{doorTopIcon}---" +
+                               $"-  {enemyType}  {wallTopExitIcon}" +
+                               $"{doorLeftIcon}  {GetTotalDoorUnlock()}  {doorRightIcon}" +
+                               $"-  {wepType} {wallBotExitIcon}" +
+                               $"---{doorBotIcon}---";
+                    }
+                    else
+                    {
+                        map += $"---{doorTopIcon}---" +
+                             $"-  {enemyType}  {wallTopExitIcon}" +
+                             $"{doorLeftIcon}  {GetTotalDoorUnlock()}  {doorRightIcon}" +
+                             $"-  {wepType}  {wallBotExitIcon}" +
+                             $"---{doorBotIcon}---";
+                    }
+                }
+                else if (GetHasWeapon(0))
+                {
+                    if (GetWeapon().GetName().CompareTo("Stick") == 0 || GetWeapon().GetName().CompareTo("Sword") == 0)
+                    {
+                        map += $"---{doorTopIcon}---" +
+                             $"-  {enemyType}  {wallTopExitIcon}" +
+                             $"{doorLeftIcon}  {GetTotalDoorUnlock()}  {doorRightIcon}" +
+                             $"-  {wepType} {wallBotExitIcon}" +
+                             $"---{doorBotIcon}---";
+                    }
+                    else
+                    {
+                        map += $"---{doorTopIcon}---" +
+                             $"-  {enemyType}  {wallTopExitIcon}" +
+                             $"{doorLeftIcon}  {GetTotalDoorUnlock()}  {doorRightIcon}" +
+                             $"-  {wepType}  {wallBotExitIcon}" +
+                             $"---{doorBotIcon}---";
+                    }
+                }
+                else
+                {
+                    map += $"---{doorTopIcon}---" +
+                         $"-  {enemyType}  {wallTopExitIcon}" +
+                         $"{doorLeftIcon}  {GetTotalDoorUnlock()}  {doorRightIcon}" +
+                         $"-  {wepType}  {wallBotExitIcon}" +
+                         $"---{doorBotIcon}---";
+                }
+            }
+            else
+            {
+                map = "                                   ";  //a blank string long enough to count every character that would exist if the map was showing it
+            }
             return map;
         }
     }

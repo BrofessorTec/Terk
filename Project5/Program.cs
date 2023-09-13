@@ -127,6 +127,10 @@ namespace Project5
                                     if (cellMonster.Attack() != 0)
                                     {
                                         Console.WriteLine($"{cellMonster.GetName()} hits {userChar.GetName()} with an attack for {cellMonster.GetDamage()} damage!");
+                                        if (cellMonster.GetName() == "Vampire")
+                                        {
+                                            Console.WriteLine($"The {cellMonster.GetName()} rejuvenates 1 hp from the attack!");
+                                        }
                                         userChar.SetHealth(cellMonster.GetDamage());
                                     }
                                     else
@@ -175,7 +179,7 @@ namespace Project5
                         if (userChar.GetHealth() > 0)
                         {
                             Console.WriteLine("What would you like to do?" +
-                                "\nPlease enter \"W\", \"A\", \"S\", \"D\" for movement or \"M\" for map.");
+                                "\nPlease enter \"W\", \"A\", \"S\", \"D\" for movement or \"R\" to read the map.");
                             userDir = Console.ReadLine();
                             int dirCheck;
 
@@ -251,10 +255,19 @@ namespace Project5
                                     Console.ReadLine();
                                 }
                             }
-                            else if (userDir.ToLower() == "m")
+                            else if (userDir.ToLower() == "r")
                             {
                                 Console.Clear();
                                 Console.WriteLine(dungeon.ToString(1)); //testing new map here
+                                                                        //Console.WriteLine(dungeon.ToString(1)); //testing new map here
+                                Console.WriteLine("Enter any key to continue.");
+                                Console.ReadLine();
+                                Console.Clear();
+                            }
+                            else if (userDir.ToLower() == "t")  //this will be a test to show the whole secret map
+                            {
+                                Console.Clear();
+                                Console.WriteLine(dungeon.ToString(-1)); //testing new map here
                                                                         //Console.WriteLine(dungeon.ToString(1)); //testing new map here
                                 Console.WriteLine("Enter any key to continue.");
                                 Console.ReadLine();
@@ -266,7 +279,7 @@ namespace Project5
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         Console.WriteLine($"\nI do not know what you mean, {userChar.GetName()}.\nEnter any key to continue.");
                         //Console.WriteLine($"{ex.Message}"); this is for troubleshooting
@@ -362,7 +375,7 @@ namespace Project5
 
         public static void WriteFile(int highScore, string highScoreName)
         {
-            string filePath = @"..\..\..\Text Files\highscore.txt";
+            //string filePath = @"..\..\..\Text Files\highscore.txt";
             string[] files = new string[2];
 
             try
