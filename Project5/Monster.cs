@@ -17,7 +17,7 @@ namespace Project5
         {
             Random random = new Random();
             int monsType = random.Next(300);
-            if (monsType < 100)
+            if (monsType < 105)
             {
                 this.name = "Orc";
                 hp = 20;
@@ -25,7 +25,7 @@ namespace Project5
                 atkChance = 0.8;
                 damage = 4;
             }
-            else if (monsType < 200)
+            else if (monsType < 210)
             {
                 this.name = "Zombie";
                 hp = 17;
@@ -40,6 +40,7 @@ namespace Project5
                 hpMax = hp;
                 atkChance = 0.8;
                 damage = 5;
+                this.SetHealth(-1);
             }
         }
 
