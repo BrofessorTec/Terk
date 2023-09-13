@@ -172,7 +172,7 @@ namespace Project5
                 }
             }
 
-            if ((lengthNum * heightNum) == wepRoom) //generating the weapon info
+            if ((lengthNum) + ((heightNum) * lengthTot) == wepRoom) //generating the weapon info 
             {
                 this.hasWeapon = true;
                 roomWep = wepType;
@@ -857,10 +857,6 @@ namespace Project5
                          $"-  {wepType}  {wallBotExitIcon}" +
                          $"---{doorBotIcon}---";
                 }
-            }
-            else
-            {
-                map = "                                   ";  //a blank string long enough to count every character that would exist if the map was showing it
             }
             return map;
         }
