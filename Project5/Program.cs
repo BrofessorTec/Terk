@@ -32,7 +32,36 @@ namespace Project5
                 if (newGameBlank)
                 {
                     playerName = GetPlayerName();
-                    userChar = new Player(playerName);
+                    if (playerName.ToLower() == "test")
+                    {
+                        bool goodValues =false;
+                        while (!goodValues)
+                        {
+                            try 
+                            {
+                                Console.Write("Enter a number for max HP: ");
+                                int maxHP = int.Parse(Console.ReadLine());
+                                Console.Write("Enter a number for the attack damage: ");
+                                int damage = int.Parse(Console.ReadLine());
+                                Console.Write("Enter a number for the attack chance betwee 0 and 1: ");
+                                int atkChance = int.Parse(Console.ReadLine());
+
+                                userChar = new Player(playerName, maxHP, damage, atkChance);
+                                goodValues = true;
+                            }
+                            catch
+                            {
+                                Console.WriteLine("There was an error creating this test character. Please try again.");
+                                Console.WriteLine("Enter any key to continue.");
+                                Console.ReadLine();
+                                Console.Clear();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        userChar = new Player(playerName);
+                    }
                     dungeon = new Dungeon(userChar);
                     charWins = 0;
                     validContinue = false;

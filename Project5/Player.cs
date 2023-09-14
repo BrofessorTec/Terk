@@ -13,7 +13,7 @@ namespace Project5
         private double atkChance;
         private int damage;*/
 
-        public Player(string name)
+        public Player(string name)  //default constructor
         {
             this.name = name;
             hp = 150; //set this back to 150 after testing
@@ -21,6 +21,16 @@ namespace Project5
             atkChance = 0.9;   //need to calculate this into the combat
             damage = 5;   // can set this back to 5 after testing
         }
+
+        public Player(string name, int maxHP, int damage, int atkChance)  //testing constructor
+        {
+            this.name = name;
+            this.hp = maxHP; //set this back to 150 after testing
+            this.hpMax = hp;
+            this.atkChance = atkChance;   //need to calculate this into the combat
+            this.damage = damage;   // can set this back to 5 after testing
+        }
+
 
         public override int Attack()
         {
