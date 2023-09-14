@@ -32,7 +32,7 @@ namespace Project5
                 if (newGameBlank)
                 {
                     playerName = GetPlayerName();
-                    if (playerName.ToLower() == "test")
+                    if (playerName.ToLower() == "test")  //adding a way to test the game while running it by naming character "test"
                     {
                         bool goodValues =false;
                         while (!goodValues)
@@ -108,7 +108,7 @@ namespace Project5
                     try
                     {
                         //probably add the map to the top of the screen?
-                        Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this might just be for debugging, need to add map later
+                        Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}. \nYou have {userChar.GetDamage()} attack power and {userChar.GetHealth()} HP left.\n");  //this might just be for debugging, need to add map later
                                                                                                                                                        //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
                                                                                                                                                        //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
                         Console.WriteLine(dungeon.ToString()); //testing new map here
@@ -173,7 +173,7 @@ namespace Project5
                                     Console.WriteLine("\nEnter any key to continue.");
                                     Console.ReadLine();
                                     Console.Clear();
-                                    Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have 0 HP left.\n");  //this will just be for debugging, need to add map later
+                                    Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}. \nYou have {userChar.GetDamage()} attack power and 0 HP left.\n");  //this will just be for debugging, need to add map later
                                                                                                                                               //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
                                                                                                                                               //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
                                     Console.WriteLine(dungeon.ToString(1)); //testing new map here
@@ -185,7 +185,7 @@ namespace Project5
                                     Console.WriteLine("\nEnter any key to continue.");
                                     Console.ReadLine();
                                     Console.Clear();
-                                    Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                                    Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}. \nYou have {userChar.GetDamage()} attack power and {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
                                                                                                                                                                    //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
                                                                                                                                                                    //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
                                     Console.WriteLine(dungeon.ToString()); //testing new map here
@@ -198,7 +198,7 @@ namespace Project5
                                 Console.WriteLine("\nEnter any key to continue.");
                                 Console.ReadLine();
                                 Console.Clear();
-                                Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}, and you have {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
+                                Console.WriteLine($"The current room is cell {dungeon.GetActiveRoom() + 1}. \nYou have {userChar.GetDamage()} attack power and {userChar.GetHealth()} HP left.\n");  //this will just be for debugging, need to add map later
                                                                                                                                                                //Console.WriteLine(DisplayMap(userChar, dungeon));  //testing map here
                                                                                                                                                                //Console.WriteLine(dungeon.GetCellMap(dungeon.GetActiveRoom())); //this also looks like it works for the single cell map
                                 Console.WriteLine(dungeon.ToString()); //testing new map here
@@ -372,6 +372,7 @@ namespace Project5
                     }
                 }
                 Console.Clear();
+                Console.WriteLine("Thanks for playing!");
             }
         }
 
